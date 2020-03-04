@@ -1,0 +1,20 @@
+parameters:
+    tmpDir: var/cache/phpstan
+    symfony:
+        container_xml_path: var/cache/dev/srcApp_KernelDevDebugContainer.xml
+    excludes_analyse:
+        - src/Migrations
+        - src/Kernel.php
+    fileExtensions:
+        # Standard php files and .dist config files
+        - php
+        - dist
+        ##This extension does not yet support custom repositoryClass specified for each entity class.
+        #doctrine:
+        #    repositoryClass: MyApp\Doctrine\BetterEntityRepository
+
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
