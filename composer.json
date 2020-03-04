@@ -1,6 +1,16 @@
 {
-    "type": "project",
+    "name": "gbere/security-bundle",
+    "description": "gBere security bundle",
+    "type": "library",
+    "keywords": ["security", "bundle", "security-bundle"],
+    "homepage": "https://github.com/gbere/security-bundle",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Gerard Berengué",
+            "email": "gerard@bere.cat"
+        }
+    ],
     "require": {
         "php": "^7.2",
         "ext-ctype": "*",
@@ -17,6 +27,7 @@
         "symfony/intl": "4.4.*",
         "symfony/mailer": "4.4.*",
         "symfony/monolog-bundle": "^3.1",
+        "symfony/orm-pack": "^1.0",
         "symfony/process": "*",
         "symfony/security-bundle": "*",
         "symfony/serializer-pack": "*",
@@ -47,12 +58,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "Gbere\\Security\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Gbere\\Security\\Tests\\": "tests/"
         }
     },
     "replace": {
