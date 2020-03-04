@@ -1,7 +1,7 @@
 parameters:
     tmpDir: var/cache/phpstan
     symfony:
-        container_xml_path: var/cache/dev/srcApp_KernelDevDebugContainer.xml
+        container_xml_path: var/cache/dev/srcGbere_Security_KernelDevDebugContainer.xml
     excludes_analyse:
         - src/Migrations
         - src/Kernel.php
