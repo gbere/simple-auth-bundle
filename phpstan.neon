@@ -12,6 +12,11 @@ parameters:
         ##This extension does not yet support custom repositoryClass specified for each entity class.
         #doctrine:
         #    repositoryClass: MyApp\Doctrine\BetterEntityRepository
+    ignoreErrors:
+        -
+            # Symfony\Component\Security\Core\Role\Role deprecated
+            message: '#Return type \(array\) of method Gbere\\Security\\Entity\\User::getRoles\(\)#'
+            path: src/Entity/User.php
 
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
