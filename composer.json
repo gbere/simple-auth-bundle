@@ -38,6 +38,7 @@
         "symfony/yaml": "*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "friendsofphp/php-cs-fixer": "^2.14",
         "phpstan/phpstan": "^0.11.7",
         "phpstan/phpstan-deprecation-rules": "^0.11.0",
