@@ -2,6 +2,8 @@ parameters:
     tmpDir: var/cache/phpstan-tests
     excludes_analyse:
         - tests/bootstrap.php
+    autoload_files:
+        - vendor/bin/.phpunit/phpunit-8.3-0/vendor/autoload.php
     fileExtensions:
         - php
         - dist
