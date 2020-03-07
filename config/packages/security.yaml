@@ -6,7 +6,7 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
-        gb_sec_user_provider:
+        gbere_security_main_provider:
             entity:
                 class: Gbere\Security\Entity\User
                 property: email
@@ -14,9 +14,9 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        gbere_security_main_firewall:
             anonymous: lazy
-            provider: gb_sec_user_provider
+            provider: gbere_security_main_provider
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
