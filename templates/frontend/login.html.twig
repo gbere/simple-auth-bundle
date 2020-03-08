@@ -10,10 +10,10 @@
     {% endif %}
 
     <form action="{{ path('gbere_security_login') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" value="{{ last_username }}">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="_password">
+        <input type="password" id="password" name="password">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         <label for="remember_me">Remember-me</label>
         <input type="checkbox" id="remember_me" name="_remember_me">
