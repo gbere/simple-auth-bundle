@@ -7,6 +7,7 @@ use Gbere\Security\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -28,12 +29,25 @@ class AccessControlTest extends WebTestCase
     {
         $this->client->request('GET', '/gbere-security-test-user');
         $this->assertResponseRedirects();
+        $this->client->request('GET', '/gbere-security-test-admin');
+        $this->assertResponseRedirects();
+        $this->client->request('GET', '/login');
+        $this->assertResponseIsSuccessful();
     }
 
     public function testRoleUser()
     {
         $this->logIn('role-user@fixture.com');
         $this->client->request('GET', '/gbere-security-test-user');
+        $this->assertResponseIsSuccessful();
+        $this->client->request('GET', '/gbere-security-test-admin');
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testRoleAdmin()
+    {
+        $this->logIn('role-admin@fixture.com');
+        $this->client->request('GET', '/gbere-security-test-admin');
         $this->assertResponseIsSuccessful();
     }
 
@@ -61,7 +75,7 @@ class AccessControlTest extends WebTestCase
         /** @var User|null $user */
         $user = $manager->getRepository(User::class)->findOneBy(['email' => $email]);
         if (null === $user) {
-            throw new CustomUserMessageAuthenticationException("The fixtures weren't loaded");
+            throw new CustomUserMessageAuthenticationException(sprintf('The email "%s" was not found. Make sure the fixtures were loaded', $email));
         }
 
         return $user;
