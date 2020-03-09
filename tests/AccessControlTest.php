@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 class AccessControlTest extends WebTestCase
 {
     private const FIREWALL_NAME = 'gbere_security_main_firewall';
-    private const FIREWALL_PROVIDER = 'gbere_security_main_provider';
+    private const PROVIDER_NAME = 'gbere_security_main_provider';
 
     /** @var KernelBrowser */
     private $client = null;
@@ -57,7 +57,7 @@ class AccessControlTest extends WebTestCase
         $token = new UsernamePasswordToken(
             $user->getUsername(),
             $user->getPassword(),
-            self::FIREWALL_PROVIDER,
+            self::PROVIDER_NAME,
             $user->getRoles()
         );
         /** @var Session $session */
