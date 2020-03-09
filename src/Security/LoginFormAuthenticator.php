@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Gbere\Security\Security;
 
-use Gbere\Security\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Gbere\Security\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,9 +26,13 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
 {
     use TargetPathTrait;
 
+    /** @var EntityManagerInterface */
     private $entityManager;
+    /** @var UrlGeneratorInterface */
     private $urlGenerator;
+    /** @var CsrfTokenManagerInterface */
     private $csrfTokenManager;
+    /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
@@ -60,17 +64,17 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): User
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
 
+        /** @var User|null $user */
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
-        if (!$user) {
-            // fail authentication with a custom error
+        if (null === $user) {
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
@@ -91,11 +95,14 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
     }
 
     /**
+     * @param string $providerKey
+     *
      * @throws \Exception
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
+        if (null !== $targetPath) {
             return new RedirectResponse($targetPath);
         }
 

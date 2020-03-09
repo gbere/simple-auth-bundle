@@ -11,7 +11,7 @@ final class LogoutController
     /**
      * @Route("/logout", name="gbere_security_logout")
      */
-    public function __invoke()
+    public function __invoke(): void
     {
     }
 }

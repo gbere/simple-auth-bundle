@@ -14,7 +14,7 @@ final class LoginFormController extends AbstractController
     /**
      * @Route("/login", name="gbere_security_login")
      */
-    public function __invoke(AuthenticationUtils $authenticationUtils)
+    public function __invoke(AuthenticationUtils $authenticationUtils): Response
     {
         $lastAuthError = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
