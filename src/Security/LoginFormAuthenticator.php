@@ -87,7 +87,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
     }
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * {@inheritdoc}
      */
     public function getPassword($credentials): ?string
     {
