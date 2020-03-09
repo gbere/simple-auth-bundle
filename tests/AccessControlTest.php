@@ -27,9 +27,9 @@ class AccessControlTest extends WebTestCase
 
     public function testAnonymousUser()
     {
-        $this->client->request('GET', '/gbere-security-test-user');
+        $this->client->request('GET', '/gbere-security-test-role-user');
         $this->assertResponseRedirects();
-        $this->client->request('GET', '/gbere-security-test-admin');
+        $this->client->request('GET', '/gbere-security-test-role-admin');
         $this->assertResponseRedirects();
         $this->client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
@@ -38,16 +38,16 @@ class AccessControlTest extends WebTestCase
     public function testRoleUser()
     {
         $this->logIn('role-user@fixture.com');
-        $this->client->request('GET', '/gbere-security-test-user');
+        $this->client->request('GET', '/gbere-security-test-role-user');
         $this->assertResponseIsSuccessful();
-        $this->client->request('GET', '/gbere-security-test-admin');
+        $this->client->request('GET', '/gbere-security-test-role-admin');
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testRoleAdmin()
     {
         $this->logIn('role-admin@fixture.com');
-        $this->client->request('GET', '/gbere-security-test-admin');
+        $this->client->request('GET', '/gbere-security-test-role-admin');
         $this->assertResponseIsSuccessful();
     }
 

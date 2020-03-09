@@ -34,7 +34,7 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # Tests
-        - { path: ^/gbere-security-test-admin, roles: ROLE_ADMIN }
-        - { path: ^/gbere-security-test-user, roles: ROLE_USER }
+        - { path: ^/gbere-security-test-role-admin, roles: ROLE_ADMIN }
+        - { path: ^/gbere-security-test-role-user, roles: ROLE_USER }
         # End tests
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
