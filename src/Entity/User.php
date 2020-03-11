@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Gbere\Security\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Table(name="gb_sec_user")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Gbere\Security\Repository\UserRepository")
  */
 class User implements UserInterface
@@ -38,6 +40,12 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     public function getId(): ?int
     {
@@ -98,6 +106,26 @@ class User implements UserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new DateTime();
     }
 
     /**
