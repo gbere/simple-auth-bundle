@@ -1,6 +1,9 @@
 language: php
 sudo: false
 
+services:
+  - mysql
+
 cache:
   directories:
     - $HOME/.composer/cache/files
@@ -9,6 +12,7 @@ cache:
 env:
   global:
     - ACTION="update"
+    - DATABASE_URL=mysql://travis:@127.0.0.1:3306/test?serverVersion=5.7
 
 matrix:
   fast_finish: true
@@ -28,12 +32,15 @@ matrix:
 before_install:
   - composer self-update
   - '[[ "$ACTION" == "install" ]] || echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini'
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
 
 install:
   - composer $ACTION
   - ./vendor/bin/simple-phpunit install
 
 script:
+  - ./bin/console doctrine:schema:update --force
+  - ./bin/console doctrine:fixtures:load --no-interaction
   - ./vendor/bin/simple-phpunit
   - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
 
