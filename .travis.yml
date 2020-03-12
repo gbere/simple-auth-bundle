@@ -1,0 +1,41 @@
+language: php
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - $HOME/symfony-bridge/.phpunit
+
+env:
+  global:
+    - ACTION="update"
+
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+      php: 7.2
+    - os: linux
+      php: 7.3
+    - os: linux
+      php: 7.4
+      env: ACTION="install"
+    - os: linux
+      php: nightly
+  allow_failures:
+    - php: nightly
+
+before_install:
+  - composer self-update
+  - '[[ "$ACTION" == "install" ]] || echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini'
+
+install:
+  - composer $ACTION
+  - ./vendor/bin/simple-phpunit install
+
+script:
+  - ./vendor/bin/simple-phpunit
+  - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
+
+notifications:
+  email: false
