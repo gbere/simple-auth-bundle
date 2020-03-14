@@ -4,5 +4,12 @@
 
 {% block body %}
     <h1>Register</h1>
-
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    {{ form_end(form) }}
 {% endblock %}
