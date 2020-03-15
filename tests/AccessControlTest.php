@@ -27,7 +27,7 @@ final class AccessControlTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testAnonymousUser()
+    public function testAnonymousUser(): void
     {
         $this->client->request('GET', '/gbere-security-test-role-user');
         $this->assertResponseRedirects();
@@ -37,7 +37,7 @@ final class AccessControlTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    public function testRoleUser()
+    public function testRoleUser(): void
     {
         $this->logIn('role-user@fixture.com');
         $this->client->request('GET', '/gbere-security-test-role-user');
@@ -46,7 +46,7 @@ final class AccessControlTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
-    public function testRoleAdmin()
+    public function testRoleAdmin(): void
     {
         $this->logIn('role-admin@fixture.com');
         $this->client->request('GET', '/gbere-security-test-role-admin');

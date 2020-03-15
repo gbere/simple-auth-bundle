@@ -10,7 +10,7 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 final class RegisterTypeTest extends TypeTestCase
 {
-    public function testSubmitValidData()
+    public function testSubmitValidData(): void
     {
         $email = 'test@test.com';
         $password = 'patata';
