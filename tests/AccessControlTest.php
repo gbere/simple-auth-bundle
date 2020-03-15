@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gbere\Security\Tests;
 
 use Doctrine\ORM\EntityManager;
@@ -12,7 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
-class AccessControlTest extends WebTestCase
+final class AccessControlTest extends WebTestCase
 {
     private const FIREWALL_NAME = 'gbere_security_main_firewall';
     private const PROVIDER_NAME = 'gbere_security_main_provider';
