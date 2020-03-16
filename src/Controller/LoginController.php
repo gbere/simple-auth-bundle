@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-final class LoginFormController extends AbstractController
+final class LoginController extends AbstractController
 {
     /**
      * @Route("/login", name="gbere_security_login")

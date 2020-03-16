@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-final class RegisterFormController extends AbstractController
+final class RegisterController extends AbstractController
 {
     /**
      * @Route("/register", name="gbere_security_register")
