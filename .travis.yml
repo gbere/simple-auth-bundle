@@ -21,9 +21,9 @@ matrix:
       php: 7.2
     - os: linux
       php: 7.3
+      env: ACTION="install"
     - os: linux
       php: 7.4
-      env: ACTION="install"
     - os: linux
       php: nightly
   allow_failures:
