@@ -49,7 +49,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
             && $request->isMethod('POST');
     }
 
-    public function getCredentials(Request $request): array
+    public function getCredentials(Request $request)
     {
         $credentials = [
             'email' => $request->request->get('email'),

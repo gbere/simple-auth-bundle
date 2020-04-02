@@ -5,14 +5,27 @@ declare(strict_types=1);
 namespace Gbere\Security\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Gbere\Security\Entity\Role;
 use Gbere\Security\Entity\User;
+use Gbere\Security\Repository\RoleRepository;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
+    /**
+     * @var array
+     */
+    private const USERS = [
+        'role-user' => 'ROLE_USER',
+        'role-admin' => 'ROLE_ADMIN',
+    ];
+
     /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
+    /** @var ObjectManager */
+    private $manager;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -21,15 +34,36 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $this->manager = $manager;
+
+        foreach (self::USERS as $userName => $userRole) {
+            // Email = name + @fixture.com
+            // Password = name
+            $this->createAndPersistUser($userName, $userRole);
+        }
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    public function getDependencies()
+    {
+        return [
+            RoleFixtures::class,
+        ];
+    }
+
+    private function createAndPersistUser(string $name, string $role): void
+    {
+        /** @var RoleRepository $repoRole */
+        $repoRole = $this->manager->getRepository(Role::class);
         $user = new User();
-        $user->setEmail('role-user@fixture.com');
-        $user->setPassword($this->passwordEncoder->encodePassword($user, 'role-user'));
-        $manager->persist($user);
-        $admin = new User();
-        $admin->setEmail('role-admin@fixture.com');
-        $admin->setPassword($this->passwordEncoder->encodePassword($admin, 'role-admin'));
-        $admin->setRoles(['ROLE_ADMIN']);
-        $manager->persist($admin);
-        $manager->flush();
+        $user->setEmail(sprintf('%s@fixture.com', $name));
+        $user->setPassword($this->passwordEncoder->encodePassword($user, $name));
+        /** @var Role $role */
+        $role = $repoRole->findOneBy(['name' => $role]);
+        $user->addRoleEntity($role);
+        $this->manager->persist($user);
+        $this->manager->flush();
     }
 }

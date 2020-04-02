@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Gbere\Security\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -35,10 +37,11 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @var string[]
-     * @ORM\Column(type="json")
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="Gbere\Security\Entity\Role", inversedBy="users")
+     * @ORM\JoinTable(name="gb_security_user_role")
      */
-    private $roles = [];
+    private $roles;
 
     /**
      * @var string The hashed password
@@ -52,6 +55,11 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -81,20 +89,38 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @return array<Role|string>
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles = [];
+        /** @var Role $role */
+        foreach ($this->roles as $role) {
+            $roles[] = $role->getName();
+        }
 
-        return array_unique($roles);
+        return $roles;
     }
 
-    public function setRoles(array $roles): self
+    public function getRolesCollection(): Collection
     {
-        $this->roles = $roles;
+        return $this->roles;
+    }
+
+    public function addRoleEntity(Role $role): self
+    {
+        if (false === $this->roles->contains($role)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    public function removeRoleEntity(Role $role): self
+    {
+        if ($this->roles->contains($role)) {
+            $this->roles->removeElement($role);
+        }
 
         return $this;
     }

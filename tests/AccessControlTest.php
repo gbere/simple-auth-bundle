@@ -62,7 +62,7 @@ final class AccessControlTest extends WebTestCase
             self::PROVIDER_NAME,
             $user->getRoles()
         );
-        /** @var Session $session */
+        /** @var Session<Session> $session */
         $session = self::$container->get('session');
         $session->set('_security_'.self::FIREWALL_NAME, serialize($token));
         $session->save();
