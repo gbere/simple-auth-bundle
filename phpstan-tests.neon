@@ -9,10 +9,6 @@ parameters:
         - php
         - dist
     ignoreErrors:
-        -
-            # Symfony\Component\Security\Core\Role\Role deprecated
-            message: '#Parameter \#4 \$roles of class [a-zA-Z0-9\\_]#'
-            path: tests/AccessControlTest.php
 
 includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
