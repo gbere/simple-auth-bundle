@@ -44,9 +44,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     }
 
     /**
-     * @return array<class-string>
+     * {@inheritdoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             RoleFixtures::class,
