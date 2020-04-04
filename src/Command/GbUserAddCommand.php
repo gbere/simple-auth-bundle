@@ -6,7 +6,6 @@ namespace Gbere\Security\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Gbere\Security\Entity\User;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,7 +16,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class GbUserAddCommand extends Command
+final class GbUserAddCommand extends AbstractCommand
 {
     /** @var string */
     protected static $defaultName = 'gb:user:add';
@@ -25,8 +24,6 @@ class GbUserAddCommand extends Command
     private $validator;
     /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
-    /** @var EntityManagerInterface */
-    private $manager;
     /** @var ParameterBagInterface */
     private $params;
 
@@ -34,9 +31,8 @@ class GbUserAddCommand extends Command
     {
         $this->validator = $validator;
         $this->passwordEncoder = $passwordEncoder;
-        $this->manager = $manager;
         $this->params = $params;
-        parent::__construct();
+        parent::__construct($manager);
     }
 
     protected function configure(): void
@@ -63,7 +59,7 @@ class GbUserAddCommand extends Command
 
                     return 1;
                 }
-                if (null !== $this->manager->getRepository(User::class)->findOneBy(['email' => $email])) {
+                if (null !== $this->findUserByEmail($email)) {
                     $io->error(sprintf('The email %s is already registered', $email));
 
                     return 1;

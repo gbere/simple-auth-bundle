@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Gbere\Security\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Gbere\Security\Entity\Role;
-use Gbere\Security\Entity\User;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,19 +12,10 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class GbUserPromoteCommand extends Command
+final class GbUserPromoteCommand extends AbstractCommand
 {
     /** @var string */
     protected static $defaultName = 'gb:user:promote';
-
-    /** @var EntityManagerInterface */
-    private $manager;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->manager = $manager;
-        parent::__construct();
-    }
 
     protected function configure(): void
     {
@@ -46,7 +34,7 @@ class GbUserPromoteCommand extends Command
         $roleName = $input->getArgument('role');
 
         /** @var Role[] $allRoles */
-        $allRoles = $this->manager->getRepository(Role::class)->findAll();
+        $allRoles = $this->findAllRoles();
         if (0 === \count($allRoles)) {
             $io->error('There is no role to select. Please, create some role first.');
 
@@ -89,15 +77,5 @@ class GbUserPromoteCommand extends Command
         $io->success(sprintf('The role %s was added to the user %s', $roleName, $email));
 
         return 0;
-    }
-
-    private function findUserByEmail(string $email): ?User
-    {
-        return $this->manager->getRepository(User::class)->findOneBy(['email' => $email]);
-    }
-
-    private function findRoleByName(string $name): ?Role
-    {
-        return $this->manager->getRepository(Role::class)->findOneBy(['name' => $name]);
     }
 }
