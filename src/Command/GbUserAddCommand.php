@@ -70,7 +70,7 @@ class GbUserAddCommand extends Command
                 }
                 $isEmailOk = true;
             } else {
-                $question = new Question('Please, enter the email address of the new user'.PHP_EOL);
+                $question = new Question('Please, enter the email address of the new user: ');
                 $answer = $helper->ask($input, $output, $question);
                 if (null === $answer) {
                     $io->warning('The email is required');
@@ -79,7 +79,7 @@ class GbUserAddCommand extends Command
             }
         }
 
-        $question = new Question('Please, enter the a password'.PHP_EOL);
+        $question = new Question('Please, enter a password: ');
         if ('test' !== $this->params->get('kernel.environment')) {
             $question->setHidden(true);
         }
