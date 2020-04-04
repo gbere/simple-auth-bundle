@@ -55,8 +55,8 @@ class GbUserPromoteCommand extends Command
 
         if (null === $email) {
             $question = new Question('Please, enter the email address of the user: ');
-            $answer = $helper->ask($input, $output, $question);
-            if (null === $answer) {
+            $email = $helper->ask($input, $output, $question);
+            if (null === $email) {
                 $io->error('The email is required');
 
                 return 1;
