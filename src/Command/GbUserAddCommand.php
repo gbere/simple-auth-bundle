@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Gbere\Security\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Gbere\Security\Entity\User;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,12 +26,12 @@ final class GbUserAddCommand extends AbstractCommand
     /** @var ParameterBagInterface */
     private $params;
 
-    public function __construct(ValidatorInterface $validator, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager, ParameterBagInterface $params)
+    public function __construct(ValidatorInterface $validator, UserPasswordEncoderInterface $passwordEncoder, ParameterBagInterface $params)
     {
         $this->validator = $validator;
         $this->passwordEncoder = $passwordEncoder;
         $this->params = $params;
-        parent::__construct($manager);
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -88,8 +87,8 @@ final class GbUserAddCommand extends AbstractCommand
 
         $user = (new User())->setEmail($email);
         $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
-        $this->manager->persist($user);
-        $this->manager->flush();
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
 
         $io->success(sprintf('The new user with email %s, was successfully created', $user->getEmail()));
 

@@ -71,8 +71,8 @@ final class GbUserPromoteCommand extends AbstractCommand
             $role = $this->findRoleByName($roleName);
         }
         $user->addRoleEntity($role);
-        $this->manager->persist($user);
-        $this->manager->flush();
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
 
         $io->success(sprintf('The role %s was added to the user %s', $roleName, $email));
 
