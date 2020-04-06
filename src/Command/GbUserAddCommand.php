@@ -10,7 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,14 +22,11 @@ final class GbUserAddCommand extends AbstractCommand
     private $validator;
     /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
-    /** @var ParameterBagInterface */
-    private $params;
 
-    public function __construct(ValidatorInterface $validator, UserPasswordEncoderInterface $passwordEncoder, ParameterBagInterface $params)
+    public function __construct(ValidatorInterface $validator, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->validator = $validator;
         $this->passwordEncoder = $passwordEncoder;
-        $this->params = $params;
         parent::__construct();
     }
 
@@ -75,7 +71,8 @@ final class GbUserAddCommand extends AbstractCommand
         }
 
         $question = new Question('Please, enter a password: ');
-        if ('test' !== $this->params->get('kernel.environment')) {
+
+        if (false === $this->isEnvTest()) {
             $question->setHidden(true);
         }
         $password = $helper->ask($input, $output, $question);

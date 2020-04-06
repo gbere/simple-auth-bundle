@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Gbere\Security\Entity\Role;
 use Gbere\Security\Entity\User;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
@@ -36,5 +37,15 @@ abstract class AbstractCommand extends Command implements ServiceSubscriberInter
     protected function getEntityManager(): EntityManagerInterface
     {
         return $this->container->get(__METHOD__);
+    }
+
+    protected function getParameterBag(): ParameterBagInterface
+    {
+        return $this->container->get(__METHOD__);
+    }
+
+    protected function isEnvTest(): bool
+    {
+        return 'test' === $this->getParameterBag()->get('kernel.environment');
     }
 }

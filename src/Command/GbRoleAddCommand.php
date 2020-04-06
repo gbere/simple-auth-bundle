@@ -14,7 +14,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class GbRoleAddCommand extends AbstractCommand
 {
+    /** @var string */
     private const ROLE_ALLOWED_PATTERN = '/^ROLE_[A-Z_]*$/';
+    /** @var int */
+    private const QUESTION_MAX_ATTEMPTS = 3;
 
     /** @var string */
     protected static $defaultName = 'gb:role:add';
@@ -48,7 +51,10 @@ final class GbRoleAddCommand extends AbstractCommand
 
                 return $answer;
             });
-            $question->setMaxAttempts(3);
+            $question->setMaxAttempts(self::QUESTION_MAX_ATTEMPTS);
+            if ($this->isEnvTest()) {
+                $question->setMaxAttempts(1);
+            }
             $roleName = $helper->ask($input, $output, $question);
         }
 
