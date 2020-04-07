@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Command;
+namespace Gbere\SimpleAuth\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Gbere\Security\Entity\Role;
-use Gbere\Security\Entity\User;
+use Gbere\SimpleAuth\Entity\Role;
+use Gbere\SimpleAuth\Entity\User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;

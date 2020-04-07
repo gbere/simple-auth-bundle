@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Tests\Command;
+namespace Gbere\SimpleAuth\Tests\Command;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

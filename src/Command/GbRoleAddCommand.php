@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Command;
+namespace Gbere\SimpleAuth\Command;
 
-use Gbere\Security\Command\Exception\InvalidRolePatternException;
-use Gbere\Security\Entity\Role;
+use Gbere\SimpleAuth\Command\Exception\InvalidRolePatternException;
+use Gbere\SimpleAuth\Entity\Role;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

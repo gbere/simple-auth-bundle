@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Tests\Command;
+namespace Gbere\SimpleAuth\Tests\Command;
 
-use Gbere\Security\Command\Exception\InvalidRolePatternException;
+use Gbere\SimpleAuth\Command\Exception\InvalidRolePatternException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;

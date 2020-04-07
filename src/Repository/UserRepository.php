@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Repository;
+namespace Gbere\SimpleAuth\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Gbere\Security\Entity\User;
+use Gbere\SimpleAuth\Entity\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

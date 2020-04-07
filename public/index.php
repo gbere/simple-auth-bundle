@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Gbere\Security\Kernel;
+use Gbere\SimpleAuth\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 

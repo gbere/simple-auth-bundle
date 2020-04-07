@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Security;
+namespace Gbere\SimpleAuth\Security;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Gbere\Security\Entity\User;
+use Gbere\SimpleAuth\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -45,7 +45,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
 
     public function supports(Request $request): bool
     {
-        return 'gbere_security_login' === $request->attributes->get('_route')
+        return 'gbere_auth_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
@@ -111,6 +111,6 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
 
     protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate('gbere_security_login');
+        return $this->urlGenerator->generate('gbere_auth_login');
     }
 }

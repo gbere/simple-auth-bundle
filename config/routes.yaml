@@ -1,10 +1,10 @@
-gb_security_test_role_user:
-    path:         /gbere-security-test-role-user
+gbere_auth_test_role_user:
+    path:         /gbere-auth-test-role-user
     controller:   Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     defaults:
         template: tests/hi.html.twig
-gb_security_test_role_admin:
-    path:         /gbere-security-test-role-admin
+gbere_auth_test_role_admin:
+    path:         /gbere-auth-test-role-admin
     controller:   Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     defaults:
         template: tests/hi.html.twig

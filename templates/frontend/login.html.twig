@@ -9,7 +9,7 @@
         <div>{{ last_auth_error.messageKey|trans(last_auth_error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('gbere_security_login') }}" method="post">
+    <form action="{{ path('gbere_auth_login') }}" method="post">
         <label for="email">Email:</label>
         <input type="text" id="email" name="email" value="{{ last_username }}">
         <label for="password">Password:</label>

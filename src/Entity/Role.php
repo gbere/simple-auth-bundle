@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Entity;
+namespace Gbere\SimpleAuth\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,9 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Table(name="gb_sec_role")
+ * @ORM\Table(name="gbere_auth_role")
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Gbere\Security\Repository\RoleRepository")
+ * @ORM\Entity(repositoryClass="Gbere\SimpleAuth\Repository\RoleRepository")
  * @UniqueEntity("name" )
  */
 class Role
@@ -28,7 +28,7 @@ class Role
 
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="Gbere\Security\Entity\User", mappedBy="roles")
+     * @ORM\ManyToMany(targetEntity="Gbere\SimpleAuth\Entity\User", mappedBy="roles")
      */
     private $users;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Tests\Controller;
+namespace Gbere\SimpleAuth\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Controller;
+namespace Gbere\SimpleAuth\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 final class LoginController extends AbstractController
 {
     /**
-     * @Route("/login", name="gbere_security_login")
+     * @Route("/login", name="gbere_auth_login")
      */
     public function __invoke(AuthenticationUtils $authenticationUtils): Response
     {

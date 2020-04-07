@@ -1,9 +1,9 @@
 {
-    "name": "gbere/security-bundle",
-    "description": "gBere security bundle",
+    "name": "gbere/simple-auth-bundle",
+    "description": "gBere simple auth bundle",
     "type": "library",
-    "keywords": ["security", "bundle", "security-bundle"],
-    "homepage": "https://github.com/gbere/security-bundle",
+    "keywords": ["simple auth", "auth", "bundle", "simple-auth-bundle", "gbere"],
+    "homepage": "https://github.com/gbere/simple-auth-bundle",
     "license": "MIT",
     "authors": [
         {
@@ -61,12 +61,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Gbere\\Security\\": "src/"
+            "Gbere\\SimpleAuth\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Gbere\\Security\\Tests\\": "tests/"
+            "Gbere\\SimpleAuth\\Tests\\": "tests/"
         }
     },
     "replace": {

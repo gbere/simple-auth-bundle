@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Tests\Form;
+namespace Gbere\SimpleAuth\Tests\Form;
 
-use Gbere\Security\Entity\User;
-use Gbere\Security\Form\RegisterType;
+use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Form\RegisterType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 final class RegisterTypeTest extends TypeTestCase

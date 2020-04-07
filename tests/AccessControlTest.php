@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Tests;
+namespace Gbere\SimpleAuth\Tests;
 
 use Doctrine\ORM\EntityManager;
-use Gbere\Security\Entity\User;
+use Gbere\SimpleAuth\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
@@ -16,8 +16,8 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 
 final class AccessControlTest extends WebTestCase
 {
-    private const FIREWALL_NAME = 'gbere_security_main_firewall';
-    private const PROVIDER_NAME = 'gbere_security_main_provider';
+    private const FIREWALL_NAME = 'gbere_auth_main_firewall';
+    private const PROVIDER_NAME = 'gbere_auth_main_provider';
 
     /** @var KernelBrowser */
     private $client = null;
@@ -29,9 +29,9 @@ final class AccessControlTest extends WebTestCase
 
     public function testAnonymousUser(): void
     {
-        $this->client->request('GET', '/gbere-security-test-role-user');
+        $this->client->request('GET', '/gbere-auth-test-role-user');
         $this->assertResponseRedirects();
-        $this->client->request('GET', '/gbere-security-test-role-admin');
+        $this->client->request('GET', '/gbere-auth-test-role-admin');
         $this->assertResponseRedirects();
         $this->client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
@@ -40,16 +40,16 @@ final class AccessControlTest extends WebTestCase
     public function testRoleUser(): void
     {
         $this->logIn('role-user@fixture.com');
-        $this->client->request('GET', '/gbere-security-test-role-user');
+        $this->client->request('GET', '/gbere-auth-test-role-user');
         $this->assertResponseIsSuccessful();
-        $this->client->request('GET', '/gbere-security-test-role-admin');
+        $this->client->request('GET', '/gbere-auth-test-role-admin');
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testRoleAdmin(): void
     {
         $this->logIn('role-admin@fixture.com');
-        $this->client->request('GET', '/gbere-security-test-role-admin');
+        $this->client->request('GET', '/gbere-auth-test-role-admin');
         $this->assertResponseIsSuccessful();
     }
 

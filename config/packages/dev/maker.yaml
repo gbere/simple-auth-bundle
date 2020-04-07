@@ -1,2 +1,2 @@
 maker:
-    root_namespace: 'Gbere\Security'
+    root_namespace: 'Gbere\SimpleAuth'

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Controller;
+namespace Gbere\SimpleAuth\Controller;
 
-use Gbere\Security\Entity\User;
-use Gbere\Security\Form\RegisterType;
+use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Form\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 final class RegisterController extends AbstractController
 {
     /**
-     * @Route("/register", name="gbere_security_register")
+     * @Route("/register", name="gbere_auth_register")
      */
     public function __invoke(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -30,7 +30,7 @@ final class RegisterController extends AbstractController
             $manager->persist($user);
             $manager->flush();
 
-            return $this->redirectToRoute('gbere_security_login');
+            return $this->redirectToRoute('gbere_auth_login');
         }
 
         return $this->render('frontend/register.html.twig', [

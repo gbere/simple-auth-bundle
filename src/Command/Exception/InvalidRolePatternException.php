@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Command\Exception;
+namespace Gbere\SimpleAuth\Command\Exception;
 
 class InvalidRolePatternException extends \Exception
 {

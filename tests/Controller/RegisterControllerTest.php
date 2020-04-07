@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Tests\Controller;
+namespace Gbere\SimpleAuth\Tests\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Gbere\Security\Entity\User;
+use Gbere\SimpleAuth\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegisterControllerTest extends WebTestCase

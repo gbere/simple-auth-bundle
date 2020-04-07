@@ -1,27 +1,27 @@
 security:
     encoders:
-        Gbere\Security\Entity\User:
+        Gbere\SimpleAuth\Entity\User:
             algorithm: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
-        gbere_security_main_provider:
+        gbere_auth_main_provider:
             entity:
-                class: Gbere\Security\Entity\User
+                class: Gbere\SimpleAuth\Entity\User
                 property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        gbere_security_main_firewall:
+        gbere_auth_main_firewall:
             anonymous: lazy
-            provider: gbere_security_main_provider
+            provider: gbere_auth_main_provider
             guard:
                 authenticators:
-                    - Gbere\Security\Security\LoginFormAuthenticator
+                    - Gbere\SimpleAuth\Security\LoginFormAuthenticator
             logout:
-                path: gbere_security_logout
+                path: gbere_auth_logout
             remember_me:
                 secret:   '%kernel.secret%'
                 lifetime: 2592000 # 30 days in seconds
@@ -38,7 +38,7 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # Tests
-        - { path: ^/gbere-security-test-role-admin, roles: ROLE_ADMIN }
-        - { path: ^/gbere-security-test-role-user, roles: ROLE_USER }
+        - { path: ^/gbere-auth-test-role-admin, roles: ROLE_ADMIN }
+        - { path: ^/gbere-auth-test-role-user, roles: ROLE_USER }
         # End tests
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }

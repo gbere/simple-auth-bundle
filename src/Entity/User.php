@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Entity;
+namespace Gbere\SimpleAuth\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,9 +13,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="gb_sec_user")
+ * @ORM\Table(name="gbere_auth_user")
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="Gbere\Security\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Gbere\SimpleAuth\Repository\UserRepository")
  * @UniqueEntity("email")
  */
 class User implements UserInterface
@@ -38,8 +38,8 @@ class User implements UserInterface
 
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="Gbere\Security\Entity\Role", inversedBy="users")
-     * @ORM\JoinTable(name="gb_security_user_role")
+     * @ORM\ManyToMany(targetEntity="Gbere\SimpleAuth\Entity\Role", inversedBy="users")
+     * @ORM\JoinTable(name="gbere_auth_user_role")
      */
     private $roles;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security;
+namespace Gbere\SimpleAuth;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;

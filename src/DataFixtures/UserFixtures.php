@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\DataFixtures;
+namespace Gbere\SimpleAuth\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Gbere\Security\Entity\Role;
-use Gbere\Security\Entity\User;
-use Gbere\Security\Repository\RoleRepository;
+use Gbere\SimpleAuth\Entity\Role;
+use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Repository\RoleRepository;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface

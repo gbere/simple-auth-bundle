@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\DataFixtures;
+namespace Gbere\SimpleAuth\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Gbere\Security\Entity\Role;
+use Gbere\SimpleAuth\Entity\Role;
 
 class RoleFixtures extends Fixture
 {

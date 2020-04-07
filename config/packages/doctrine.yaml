@@ -10,9 +10,9 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            Gbere\Security:
+            Gbere\SimpleAuth:
                 is_bundle: false
                 type: annotation
                 dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'Gbere\Security\Entity'
-                alias: Gbere\Security
+                prefix: 'Gbere\SimpleAuth\Entity'
+                alias: Gbere\SimpleAuth

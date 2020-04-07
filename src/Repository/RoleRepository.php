@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Gbere\Security\Repository;
+namespace Gbere\SimpleAuth\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Gbere\Security\Entity\Role;
+use Gbere\SimpleAuth\Entity\Role;
 
 /**
  * @method Role|null find($id, $lockMode = null, $lockVersion = null)
