@@ -56,8 +56,21 @@ class User implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
+    /**
+     * @var null|string
+     * @ORM\Column(type="string", length=100, nullable=true, unique=true)
+     */
+    private $confirmationToken;
+
     public function __construct()
     {
+        $this->enabled = false;
         $this->roles = new ArrayCollection();
     }
 
@@ -176,5 +189,37 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function hasEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function generateToken(): void
+    {
+        $this->setConfirmationToken(bin2hex(random_bytes(50)));
     }
 }

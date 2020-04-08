@@ -63,6 +63,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         /** @var Role $role */
         $role = $repoRole->findOneBy(['name' => $role]);
         $user->addRoleEntity($role);
+        $user->hasEnabled(true);
         $this->manager->persist($user);
         $this->manager->flush();
     }
