@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Controller;
 
-use \Exception;
+use Exception;
 use Gbere\SimpleAuth\Entity\User;
 use Gbere\SimpleAuth\Form\RegisterType;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;

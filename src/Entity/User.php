@@ -63,10 +63,16 @@ class User implements UserInterface
     private $enabled;
 
     /**
-     * @var null|string
+     * @var string|null
      * @ORM\Column(type="string", length=100, nullable=true, unique=true)
      */
     private $confirmationToken;
+
+    /**
+     * @var DateTime|null
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $passwordRequestAt;
 
     public function __construct()
     {
@@ -221,5 +227,17 @@ class User implements UserInterface
     public function generateToken(): void
     {
         $this->setConfirmationToken(bin2hex(random_bytes(50)));
+    }
+
+    public function getPasswordRequestAt(): ?DateTime
+    {
+        return $this->passwordRequestAt;
+    }
+
+    public function setPasswordRequestAt(?DateTime $passwordRequestAt): self
+    {
+        $this->passwordRequestAt = $passwordRequestAt;
+
+        return $this;
     }
 }

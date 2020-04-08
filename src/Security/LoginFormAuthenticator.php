@@ -87,6 +87,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
             throw new CustomUserMessageAuthenticationException('Invalid credentials');
         }
 
+        /** @var User $user */
         if (false === $user->isEnabled()) {
             throw new CustomUserMessageAuthenticationException('The user isn\'t enabled');
         }

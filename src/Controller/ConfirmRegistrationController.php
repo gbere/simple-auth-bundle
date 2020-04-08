@@ -31,7 +31,7 @@ final class ConfirmRegistrationController extends AbstractController
     ): Response {
         /** @var EntityManager $manager */
         $manager = $this->getDoctrine()->getManager();
-        /** @var null|User $user */
+        /** @var User|null $user */
         $user = $manager->getRepository(User::class)->findOneBy(['confirmationToken' => $token]);
         if (null === $user) {
             $this->addFlash('danger', 'The token is invalid');
