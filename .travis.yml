@@ -43,6 +43,8 @@ script:
   - ./bin/console doctrine:fixtures:load --no-interaction
   - ./vendor/bin/simple-phpunit
   - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
+  - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/phpstan analyse src/ -c phpstan.neon --no-progress -vvv --memory-limit=1024M'
+  - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/phpstan analyse tests/ -c phpstan-tests.neon --no-progress -vvv --memory-limit=1024M'
   - composer validate
 
 notifications:
