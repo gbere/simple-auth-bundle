@@ -9,9 +9,11 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Gbere\SimpleAuth\Entity\User;
 use Gbere\SimpleAuth\Security\LoginFormAuthenticator;
+use Gbere\SimpleAuth\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
@@ -22,12 +24,14 @@ final class ConfirmRegistrationController extends AbstractController
      *
      * @throws ORMException
      * @throws OptimisticLockException
+     * @throws TransportExceptionInterface
      */
     public function __invoke(
         string $token,
         Request $request,
         GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $authenticator
+        LoginFormAuthenticator $authenticator,
+        Mailer $mailer
     ): Response {
         /** @var EntityManager $manager */
         $manager = $this->getDoctrine()->getManager();
@@ -35,12 +39,15 @@ final class ConfirmRegistrationController extends AbstractController
         $user = $manager->getRepository(User::class)->findOneBy(['confirmationToken' => $token]);
         if (null === $user) {
             $this->addFlash('danger', 'The token is invalid');
+
+            return $this->redirectToRoute('gbere_auth_login');
         }
         $user->hasEnabled(true);
         $user->setConfirmationToken(null);
         $manager->persist($user);
         $manager->flush();
         $this->addFlash('success', 'The user has been successfully activated');
+        $mailer->sendWelcomeMessage($user);
 
         // TODO: Auto login after validate?
         // return $guardHandler->authenticateUserAndHandleSuccess($user, $request, $authenticator, 'gbere_main_firewall');

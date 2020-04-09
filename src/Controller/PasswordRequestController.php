@@ -10,13 +10,12 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Gbere\SimpleAuth\Entity\User;
-use Symfony\Bridge\Twig\Mime\NotificationEmail;
+use Gbere\SimpleAuth\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class PasswordRequestController extends AbstractController
@@ -29,7 +28,7 @@ final class PasswordRequestController extends AbstractController
      * @throws OptimisticLockException
      * @throws TransportExceptionInterface
      */
-    public function __invoke(Request $request, MailerInterface $mailer): Response
+    public function __invoke(Request $request, Mailer $mailer): Response
     {
         $builder = $this->createFormBuilder()->add('email', EmailType::class);
         $form = $builder->getForm();
@@ -45,13 +44,7 @@ final class PasswordRequestController extends AbstractController
                 $user->setPasswordRequestAt(new DateTime());
                 $manager->persist($user);
                 $manager->flush();
-                $mailer->send((new NotificationEmail())
-                    ->from($this->getParameter('email.sender'))
-                    ->to($user->getEmail())
-                    ->subject('Password request')
-                    ->htmlTemplate('emails/password-reset.html.twig')
-                    ->context(['token' => $user->getConfirmationToken()])
-                );
+                $mailer->sendPasswordResetMessage($user);
                 $this->addFlash('info', sprintf('An email was sent to %s to restore the password', $email));
 
                 return $this->redirectToRoute('gbere_auth_login');
