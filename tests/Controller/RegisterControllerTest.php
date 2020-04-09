@@ -36,6 +36,12 @@ class RegisterControllerTest extends WebTestCase
             'register[password][first]' => self::PASSWORD,
             'register[password][second]' => self::PASSWORD,
         ]);
+        if ($this->isValidateEmailRequired()) {
+            $this->assertEmailCount(1);
+            $email = $this->getMailerMessage(0);
+            $this->assertEmailHeaderSame($email, 'To', self::EMAIL);
+            $this->assertEmailTextBodyContains($email, 'Confirm registration');
+        }
         $this->assertResponseRedirects('/login');
     }
 
@@ -53,5 +59,10 @@ class RegisterControllerTest extends WebTestCase
             $manager->remove($user);
             $manager->flush();
         }
+    }
+
+    private function isValidateEmailRequired(): bool
+    {
+        return self::$container->getParameter('email.validate');
     }
 }
