@@ -38,7 +38,7 @@ class RegisterControllerTest extends WebTestCase
         ]);
         if ($this->isValidateEmailRequired()) {
             $this->assertEmailCount(1);
-            $email = $this->getMailerMessage(0);
+            $email = $this->getMailerMessage();
             $this->assertEmailHeaderSame($email, 'To', self::EMAIL);
             $this->assertEmailTextBodyContains($email, 'Confirm registration');
         }

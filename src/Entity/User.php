@@ -224,9 +224,11 @@ class User implements UserInterface
     /**
      * @throws \Exception
      */
-    public function generateToken(): void
+    public function generateToken(): self
     {
         $this->setConfirmationToken(bin2hex(random_bytes(50)));
+
+        return $this;
     }
 
     public function getPasswordRequestAt(): ?DateTime
