@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 final class PasswordResetController extends AbstractController
 {
     /**
-     * @Route("/login/password/reset/{token}", name="gbere_auth_password_reset")
+     * @Route("/password/reset/{token}", name="gbere_auth_password_reset")
      *
      * @throws Exception
      * @throws ORMException

@@ -37,6 +37,7 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # Tests
         - { path: ^/gbere-auth-test-role-admin, roles: ROLE_ADMIN }
         - { path: ^/gbere-auth-test-role-user, roles: ROLE_USER }

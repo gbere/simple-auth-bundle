@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class LogoutControllerTest extends WebTestCase
 {
-    public function testLogout(): void
+    public function testLogoutForm(): void
     {
         $client = static::createClient();
         $client->request('GET', '/logout');

@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class PasswordRequestController extends AbstractController
 {
     /**
-     * @Route("/login/password/request", name="gbere_auth_password_request")
+     * @Route("/password/request", name="gbere_auth_password_request")
      *
      * @throws Exception
      * @throws ORMException
