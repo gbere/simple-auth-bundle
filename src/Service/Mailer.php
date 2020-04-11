@@ -9,6 +9,7 @@ use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 class Mailer
 {
@@ -30,7 +31,7 @@ class Mailer
     {
         $this->mailer->send((new NotificationEmail())
             ->from($this->getSenderEmail())
-            ->to($user->getEmail())
+            ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Confirm registration')
             ->htmlTemplate('emails/confirm-registration.html.twig')
             ->context(['token' => $user->getConfirmationToken()])
@@ -44,7 +45,7 @@ class Mailer
     {
         $this->mailer->send((new NotificationEmail())
             ->from($this->getSenderEmail())
-            ->to($user->getEmail())
+            ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Welcome')
             ->htmlTemplate('emails/welcome.html.twig')
             ->context(['token' => $user->getConfirmationToken()])
@@ -58,7 +59,7 @@ class Mailer
     {
         $this->mailer->send((new NotificationEmail())
             ->from($this->getSenderEmail())
-            ->to($user->getEmail())
+            ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Password request')
             ->htmlTemplate('emails/password-reset.html.twig')
             ->context(['token' => $user->getConfirmationToken()])
@@ -72,7 +73,7 @@ class Mailer
     {
         $this->mailer->send((new NotificationEmail())
             ->from($this->getSenderEmail())
-            ->to($user->getEmail())
+            ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Password reset notification')
             ->htmlTemplate('emails/password-reset-notification.html.twig')
         );
