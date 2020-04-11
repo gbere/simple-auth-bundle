@@ -12,6 +12,7 @@ class GbUserAddCommandTest extends KernelTestCase
 {
     private const COMMAND = 'gb:user:add';
     private const EMAIL = 'test@command.com';
+    private const NAME = 'Test';
     private const PASSWORD = 'password';
 
     public function testExecute(): void
@@ -24,6 +25,7 @@ class GbUserAddCommandTest extends KernelTestCase
         $commandTester->setInputs([
             self::EMAIL,
             self::PASSWORD,
+            self::NAME,
         ]);
         $commandTester->execute(['command' => $command->getName()]);
 

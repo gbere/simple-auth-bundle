@@ -61,7 +61,7 @@ final class GbUserAddCommand extends AbstractCommand
                 }
                 $isEmailOk = true;
             } else {
-                $question = new Question('Please, enter the email address of the new user: ');
+                $question = new Question('Enter the email address of the new user: ');
                 $answer = $helper->ask($input, $output, $question);
                 if (null === $answer) {
                     $io->warning('The email is required');
@@ -70,8 +70,7 @@ final class GbUserAddCommand extends AbstractCommand
             }
         }
 
-        $question = new Question('Please, enter a password: ');
-
+        $question = new Question('Enter a password: ');
         if (false === $this->isEnvTest()) {
             $question->setHidden(true);
         }
@@ -82,7 +81,18 @@ final class GbUserAddCommand extends AbstractCommand
             return 1;
         }
 
-        $user = (new User())->setEmail($email);
+        $question = new Question('Enter the name: ');
+        $name = $helper->ask($input, $output, $question);
+        if (null === $name) {
+            $io->warning('The name is required');
+
+            return 1;
+        }
+
+        $user = (new User())
+            ->setEmail($email)
+            ->setName($name)
+        ;
         $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();

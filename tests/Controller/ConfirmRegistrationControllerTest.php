@@ -13,8 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ConfirmRegistrationControllerTest extends WebTestCase
 {
-    /** @var string */
     private const EMAIL = 'confirm-my-registration@test.com';
+    private const NAME = 'Test';
 
     /** @var User|null */
     private $user;
@@ -64,6 +64,7 @@ class ConfirmRegistrationControllerTest extends WebTestCase
         $this->user = (new User())
             ->setEmail(self::EMAIL)
             ->setPassword('')
+            ->setName(self::NAME)
             ->generateToken()
             ->hasEnabled(false)
         ;

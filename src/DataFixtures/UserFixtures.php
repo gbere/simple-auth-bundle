@@ -59,6 +59,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $repoRole = $this->manager->getRepository(Role::class);
         $user = new User();
         $user->setEmail(sprintf('%s@fixture.com', $name));
+        $user->setName($name);
         $user->setPassword($this->passwordEncoder->encodePassword($user, $name));
         /** @var Role $role */
         $role = $repoRole->findOneBy(['name' => $role]);

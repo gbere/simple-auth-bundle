@@ -12,9 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegisterControllerTest extends WebTestCase
 {
-    /** @var string */
     private const EMAIL = 'register-user@test.com';
-    /** @var string */
+    private const NAME = 'Test';
     private const PASSWORD = 'patata';
 
     public function setUp(): void
@@ -33,6 +32,7 @@ class RegisterControllerTest extends WebTestCase
         $client->request('GET', '/register');
         $client->submitForm('Submit', [
             'register[email]' => self::EMAIL,
+            'register[name]' => self::NAME,
             'register[password][first]' => self::PASSWORD,
             'register[password][second]' => self::PASSWORD,
         ]);

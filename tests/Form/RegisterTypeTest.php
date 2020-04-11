@@ -10,22 +10,26 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 final class RegisterTypeTest extends TypeTestCase
 {
+    private const EMAIL = 'test@test.com';
+    private const NAME = 'Test';
+    private const PASSWORD = 'patata';
+
     public function testSubmitValidData(): void
     {
-        $email = 'test@test.com';
-        $password = 'patata';
         $formData = [
-            'email' => $email,
+            'email' => self::EMAIL,
+            'name' => self::NAME,
             'password' => [
-                'first' => $password,
-                'second' => $password,
+                'first' => self::PASSWORD,
+                'second' => self::PASSWORD,
             ],
         ];
         $userToCompare = new User();
         $form = $this->factory->create(RegisterType::class, $userToCompare);
         $user = new User();
-        $user->setEmail($email);
-        $user->setPassword($password);
+        $user->setEmail(self::EMAIL);
+        $user->setName(self::NAME);
+        $user->setPassword(self::PASSWORD);
         $form->submit($formData);
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($user, $userToCompare);

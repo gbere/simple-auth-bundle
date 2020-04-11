@@ -37,6 +37,13 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=80)
+     * @Assert\NotBlank()
+     */
+    private $name;
+
+    /**
      * @var Collection
      * @ORM\ManyToMany(targetEntity="Gbere\SimpleAuth\Entity\Role", inversedBy="users")
      * @ORM\JoinTable(name="gbere_auth_user_role")
@@ -105,6 +112,18 @@ class User implements UserInterface
     public function getUsername(): string
     {
         return $this->email;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
