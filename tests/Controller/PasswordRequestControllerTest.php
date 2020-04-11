@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class PasswordRequestControllerTest extends WebTestCase
 {
-    /** @var string */
     private const EMAIL = 'role-user@fixture.com';
 
     public function setUp(): void

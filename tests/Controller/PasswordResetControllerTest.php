@@ -13,9 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class PasswordResetControllerTest extends WebTestCase
 {
-    /** @var string */
     private const EMAIL = 'role-user@fixture.com';
-    /** @var string */
     private const PASSWORD = 'role-user';
 
     /** @var User|null */
