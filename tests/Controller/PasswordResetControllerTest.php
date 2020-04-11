@@ -10,6 +10,7 @@ use Doctrine\ORM\ORMException;
 use Exception;
 use Gbere\SimpleAuth\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Mime\Address;
 
 class PasswordResetControllerTest extends WebTestCase
 {
@@ -41,7 +42,7 @@ class PasswordResetControllerTest extends WebTestCase
         ]);
         $this->assertEmailCount(1);
         $email = $this->getMailerMessage();
-        $this->assertEmailHeaderSame($email, 'To', self::EMAIL);
+        $this->assertEmailHeaderSame($email, 'To', (new Address($this->user->getEmail(), $this->user->getName()))->toString());
         $this->assertEmailTextBodyContains($email, 'Password reset notification');
         $this->assertResponseRedirects('/login');
         $this->loadUser();

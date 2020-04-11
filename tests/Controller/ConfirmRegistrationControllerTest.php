@@ -10,6 +10,7 @@ use Doctrine\ORM\ORMException;
 use Exception;
 use Gbere\SimpleAuth\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Mime\Address;
 
 class ConfirmRegistrationControllerTest extends WebTestCase
 {
@@ -35,7 +36,7 @@ class ConfirmRegistrationControllerTest extends WebTestCase
         $client->request('GET', $this->generateConfirmRegistrationRoute());
         $this->assertEmailCount(1);
         $email = $this->getMailerMessage();
-        $this->assertEmailHeaderSame($email, 'To', self::EMAIL);
+        $this->assertEmailHeaderSame($email, 'To', (new Address(self::EMAIL, self::NAME))->toString());
         $this->assertEmailTextBodyContains($email, 'Welcome');
         $this->assertResponseRedirects('/login');
     }

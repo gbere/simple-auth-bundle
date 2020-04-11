@@ -9,6 +9,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Gbere\SimpleAuth\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Mime\Address;
 
 class RegisterControllerTest extends WebTestCase
 {
@@ -39,7 +40,7 @@ class RegisterControllerTest extends WebTestCase
         if ($this->isValidateEmailRequired()) {
             $this->assertEmailCount(1);
             $email = $this->getMailerMessage();
-            $this->assertEmailHeaderSame($email, 'To', self::EMAIL);
+            $this->assertEmailHeaderSame($email, 'To', (new Address(self::EMAIL, self::NAME))->toString());
             $this->assertEmailTextBodyContains($email, 'Confirm registration');
         }
         $this->assertResponseRedirects('/login');
