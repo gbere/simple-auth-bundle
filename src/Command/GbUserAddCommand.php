@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class GbUserAddCommand extends AbstractCommand
 {
-    /** @var string */
     protected static $defaultName = 'gb:user:add';
+
     /** @var ValidatorInterface */
     private $validator;
     /** @var UserPasswordEncoderInterface */
@@ -71,7 +71,7 @@ final class GbUserAddCommand extends AbstractCommand
         }
 
         $question = new Question('Enter a password: ');
-        if (false === $this->isEnvTest()) {
+        if (false === $this->isTestEnv()) {
             $question->setHidden(true);
         }
         $password = $helper->ask($input, $output, $question);

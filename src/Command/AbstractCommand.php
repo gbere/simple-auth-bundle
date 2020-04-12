@@ -44,7 +44,7 @@ abstract class AbstractCommand extends Command implements ServiceSubscriberInter
         return $this->container->get(__METHOD__);
     }
 
-    protected function isEnvTest(): bool
+    protected function isTestEnv(): bool
     {
         return 'test' === $this->getParameterBag()->get('kernel.environment');
     }
