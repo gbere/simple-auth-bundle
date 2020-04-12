@@ -14,7 +14,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class GbUserPromoteCommand extends AbstractCommand
 {
-    /** @var string */
+    private const QUESTION_MAX_ATTEMPTS = 3;
+
     protected static $defaultName = 'gb:user:promote';
 
     protected function configure(): void
@@ -43,12 +44,18 @@ final class GbUserPromoteCommand extends AbstractCommand
 
         if (null === $email) {
             $question = new Question('Please, enter the email address of the user: ');
-            $email = $helper->ask($input, $output, $question);
-            if (null === $email) {
-                $io->error('The email is required');
+            $question->setValidator(function ($answer) {
+                if (null === $answer) {
+                    throw new \Exception('The email address of the user to promote is required');
+                }
 
-                return 1;
+                return $answer;
+            });
+            $question->setMaxAttempts(self::QUESTION_MAX_ATTEMPTS);
+            if ($this->isTestEnv()) {
+                $question->setMaxAttempts(1);
             }
+            $email = $helper->ask($input, $output, $question);
         }
         $user = $this->findUserByEmail($email);
         if (null === $user) {

@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class GbUserAddCommand extends AbstractCommand
 {
+    private const QUESTION_MAX_ATTEMPTS = 3;
+
     protected static $defaultName = 'gb:user:add';
 
     /** @var ValidatorInterface */
@@ -44,6 +46,10 @@ final class GbUserAddCommand extends AbstractCommand
         $helper = $this->getHelper('question');
         $email = $input->getArgument('email');
         $isEmailOk = false;
+        $questionMaxAttempts = self::QUESTION_MAX_ATTEMPTS;
+        if ($this->isTestEnv()) {
+            $questionMaxAttempts = 1;
+        }
 
         while (false === $isEmailOk) {
             if (null !== $email) {
@@ -62,32 +68,42 @@ final class GbUserAddCommand extends AbstractCommand
                 $isEmailOk = true;
             } else {
                 $question = new Question('Enter the email address of the new user: ');
-                $answer = $helper->ask($input, $output, $question);
-                if (null === $answer) {
-                    $io->warning('The email is required');
-                }
-                $email = $answer;
+                $question->setValidator(function ($answer) {
+                    if (null === $answer) {
+                        throw new \Exception('The email address is required to create a new user');
+                    }
+
+                    return $answer;
+                });
+                $question->setMaxAttempts($questionMaxAttempts);
+                $email = $helper->ask($input, $output, $question);
             }
         }
 
         $question = new Question('Enter a password: ');
+        $question->setValidator(function ($answer) {
+            if (null === $answer || '' === trim($answer)) {
+                throw new \Exception('The password can\'t be empty');
+            }
+
+            return $answer;
+        });
+        $question->setMaxAttempts($questionMaxAttempts);
         if (false === $this->isTestEnv()) {
             $question->setHidden(true);
         }
         $password = $helper->ask($input, $output, $question);
-        if (null === $password) {
-            $io->warning('The password is required');
 
-            return 1;
-        }
+        $question = new Question('Enter the name of the new user: ');
+        $question->setValidator(function ($answer) {
+            if (null === $answer) {
+                throw new \Exception('The name field is required to create a new user');
+            }
 
-        $question = new Question('Enter the name: ');
+            return $answer;
+        });
+        $question->setMaxAttempts($questionMaxAttempts);
         $name = $helper->ask($input, $output, $question);
-        if (null === $name) {
-            $io->warning('The name is required');
-
-            return 1;
-        }
 
         $user = (new User())
             ->setEmail($email)
