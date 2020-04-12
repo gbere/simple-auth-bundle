@@ -19,7 +19,7 @@ class PasswordResetControllerTest extends WebTestCase
 
     /** @var User|null */
     private $user;
-    /** @var EntityManager|null $manager */
+    /** @var EntityManager|null */
     private $manager;
 
     public function setUp(): void
