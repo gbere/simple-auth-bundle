@@ -9,6 +9,9 @@ parameters:
         - php
         - dist
     ignoreErrors:
+        -
+            message: '#Property Gbere\\SimpleAuth\\Tests\\Controller\\ConfirmRegistrationControllerTest::\$user \(Gbere\\SimpleAuth\\Entity\\User\|null\) does not accept Gbere\\SimpleAuth\\Entity\\UserBase.#'
+            path: tests/Controller/ConfirmRegistrationControllerTest.php
 
 includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon

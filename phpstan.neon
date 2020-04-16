@@ -18,7 +18,7 @@ parameters:
         -
             # Symfony\Component\Security\Core\Role\Role deprecated
             message: '#return type \(array<string|Symfony\Component\Security\Core\Role\Role>\) of method Symfony\\Component\\Security\\Core\\User\\UserInterface::getRoles\(\)#'
-            path: src/Entity/User.php
+            path: src/Entity/UserBase.php
 
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon

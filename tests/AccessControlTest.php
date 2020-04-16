@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Gbere\SimpleAuth\Tests;
 
 use Doctrine\ORM\EntityManager;
+use Gbere\SimpleAuth\Entity\AdminUser;
 use Gbere\SimpleAuth\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -53,9 +54,16 @@ final class AccessControlTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    private function logIn(string $email): void
+    public function testAdminUser(): void
     {
-        $user = $this->getUserByEmail($email);
+        $this->logIn('admin-user@fixture.com', true);
+        $this->client->request('GET', '/gbere-auth-test-role-admin');
+        $this->assertResponseIsSuccessful();
+    }
+
+    private function logIn(string $email, bool $isAdminUser = false): void
+    {
+        $user = $this->getUserByEmail($email, $isAdminUser);
         $token = new UsernamePasswordToken(
             $user->getUsername(),
             $user->getPassword(),
@@ -70,12 +78,20 @@ final class AccessControlTest extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
-    private function getUserByEmail(string $email): User
+    /**
+     * @return User|AdminUser
+     */
+    private function getUserByEmail(string $email, bool $isAdminUser = false)
     {
         /** @var EntityManager $manager */
         $manager = self::$container->get('doctrine.orm.entity_manager');
-        /** @var User|null $user */
-        $user = $manager->getRepository(User::class)->findOneBy(['email' => $email]);
+        if ($isAdminUser) {
+            /** @var AdminUser|null $user */
+            $user = $manager->getRepository(AdminUser::class)->findOneBy(['email' => $email]);
+        } else {
+            /** @var User|null $user */
+            $user = $manager->getRepository(User::class)->findOneBy(['email' => $email]);
+        }
         if (null === $user) {
             throw new CustomUserMessageAuthenticationException(sprintf('The email "%s" was not found. Make sure the fixtures were loaded', $email));
         }

@@ -7,8 +7,8 @@ namespace Gbere\SimpleAuth\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Gbere\SimpleAuth\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Gbere\SimpleAuth\Repository\AdminRepository")
  */
-class User extends UserBase
+class AdminUser extends UserBase
 {
 }

@@ -2,6 +2,8 @@ security:
     encoders:
         Gbere\SimpleAuth\Entity\User:
             algorithm: auto
+        Gbere\SimpleAuth\Entity\AdminUser:
+            algorithm: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
