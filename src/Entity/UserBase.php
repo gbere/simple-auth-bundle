@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="type", type="string", length=4)
  * @ORM\DiscriminatorMap({
  *     "user"="User",
+ *     "adm"="AdminUser",
  * })
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("email")
@@ -142,7 +143,11 @@ abstract class UserBase implements UserInterface
             $roles[] = $role->getName();
         }
 
-        return $roles;
+        if (AdminUser::class === static::class) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+
+        return array_unique($roles);
     }
 
     public function getRolesCollection(): Collection
