@@ -4,33 +4,20 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Command;
 
-use Gbere\SimpleAuth\Entity\User;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class GbUserAddCommand extends AbstractCommand
 {
     private const QUESTION_MAX_ATTEMPTS = 3;
 
     protected static $defaultName = 'gb:user:add';
-
-    /** @var ValidatorInterface */
-    private $validator;
-    /** @var UserPasswordEncoderInterface */
-    private $passwordEncoder;
-
-    public function __construct(ValidatorInterface $validator, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->validator = $validator;
-        $this->passwordEncoder = $passwordEncoder;
-        parent::__construct();
-    }
 
     protected function configure(): void
     {
@@ -40,6 +27,10 @@ final class GbUserAddCommand extends AbstractCommand
         ;
     }
 
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -105,13 +96,11 @@ final class GbUserAddCommand extends AbstractCommand
         $question->setMaxAttempts($questionMaxAttempts);
         $name = $helper->ask($input, $output, $question);
 
-        $user = (new User())
-            ->setEmail($email)
-            ->setName($name)
-        ;
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
+        $user = $this->userRepository->createUser();
+        $user->setEmail($email);
+        $user->setName($name);
+        $user->setPassword($this->userRepository->encodePassword($password));
+        $this->userRepository->persistAndFlush($user);
 
         $io->success(sprintf('The new user with email %s, was successfully created', $user->getEmail()));
 
