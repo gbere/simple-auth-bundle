@@ -27,3 +27,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    Gbere\SimpleAuth\Entity\User:
+    gbere_simple_auth.entity.user:
+        alias: Gbere\SimpleAuth\Entity\User
+
+    Gbere\SimpleAuth\Repository\UserRepository:
+        arguments:
+                ['@Doctrine\Common\Persistence\ManagerRegistry', '@gbere_simple_auth.entity.user']
+    gbere_simple_auth.repository.user_repository:
+        alias: Gbere\SimpleAuth\Repository\UserBaseRepository
