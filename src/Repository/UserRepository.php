@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Gbere\SimpleAuth\Entity\UserInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
@@ -20,8 +21,13 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry, UserInterface $user)
+    /** @var UserPasswordEncoderInterface */
+    protected $passwordEncoder;
+
+    public function __construct(ManagerRegistry $registry, UserInterface $user, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $this->passwordEncoder = $passwordEncoder;
+
         parent::__construct($registry, \get_class($user));
     }
 
@@ -43,5 +49,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function createUser(): UserInterface
     {
         return new $this->_entityName();
+    }
+
+    public function encodePassword(string $password): string
+    {
+        return $this->passwordEncoder->encodePassword(new $this->_entityName(), $password);
+    }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function persistAndFlush(UserInterface $user): void
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
     }
 }
