@@ -28,6 +28,13 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    Gbere\SimpleAuth\Service\Mailer:
+        arguments:
+                ['@mailer.mailer', '@parameter_bag']
+    gbere_simple_auth.mailer:
+        alias: Gbere\SimpleAuth\Service\Mailer
+
+
     Gbere\SimpleAuth\Entity\User:
     gbere_simple_auth.entity.user:
         alias: Gbere\SimpleAuth\Entity\User
