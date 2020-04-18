@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Repository\UserRepository;
 use Gbere\SimpleAuth\Security\LoginFormAuthenticator;
 use Gbere\SimpleAuth\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,12 +30,10 @@ final class ConfirmRegistrationController extends AbstractController
         Request $request,
         GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $authenticator,
-        Mailer $mailer
+        Mailer $mailer,
+        UserRepository $userRepository
     ): Response {
-        /** @var EntityManager $manager */
-        $manager = $this->getDoctrine()->getManager();
-        /** @var User|null $user */
-        $user = $manager->getRepository(User::class)->findOneBy(['confirmationToken' => $token]);
+        $user = $userRepository->findOneBy(['confirmationToken' => $token]);
         if (null === $user) {
             $this->addFlash('danger', 'The token is invalid');
 
@@ -44,8 +41,7 @@ final class ConfirmRegistrationController extends AbstractController
         }
         $user->hasEnabled(true);
         $user->setConfirmationToken(null);
-        $manager->persist($user);
-        $manager->flush();
+        $userRepository->persistAndFlush($user);
         $this->addFlash('success', 'The user has been successfully activated');
         $mailer->sendWelcomeMessage($user);
 

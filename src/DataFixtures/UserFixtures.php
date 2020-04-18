@@ -6,11 +6,12 @@ namespace Gbere\SimpleAuth\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ObjectManager;
 use Gbere\SimpleAuth\Entity\Role;
-use Gbere\SimpleAuth\Entity\User;
 use Gbere\SimpleAuth\Repository\RoleRepository;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Gbere\SimpleAuth\Repository\UserRepository;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -22,20 +23,19 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         'role-admin' => 'ROLE_ADMIN',
     ];
 
-    /** @var UserPasswordEncoderInterface */
-    private $passwordEncoder;
-    /** @var ObjectManager */
-    private $manager;
+    /** @var UserRepository */
+    private $userRepository;
+    /** @var RoleRepository */
+    private $roleRepository;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserRepository $userRepository, RoleRepository $roleRepository)
     {
-        $this->passwordEncoder = $passwordEncoder;
+        $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
     }
 
     public function load(ObjectManager $manager): void
     {
-        $this->manager = $manager;
-
         foreach (self::USERS as $userName => $userRole) {
             // Email = name + @fixture.com
             // Password = name
@@ -53,19 +53,20 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     private function createAndPersistUser(string $name, string $role): void
     {
-        /** @var RoleRepository $repoRole */
-        $repoRole = $this->manager->getRepository(Role::class);
-        $user = new User();
+        $user = $this->userRepository->createUser();
         $user->setEmail(sprintf('%s@fixture.com', $name));
         $user->setName($name);
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $name));
+        $user->setPassword($this->userRepository->encodePassword($name));
         /** @var Role $role */
-        $role = $repoRole->findOneBy(['name' => $role]);
+        $role = $this->roleRepository->findOneBy(['name' => $role]);
         $user->addRoleEntity($role);
         $user->hasEnabled(true);
-        $this->manager->persist($user);
-        $this->manager->flush();
+        $this->userRepository->persistAndFlush($user);
     }
 }

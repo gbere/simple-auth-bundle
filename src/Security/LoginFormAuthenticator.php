@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Security;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,8 +27,8 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
 {
     use TargetPathTrait;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var UserRepository */
+    private $userRepository;
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
     /** @var CsrfTokenManagerInterface */
@@ -35,9 +36,13 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
     /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        UserRepository $userRepository,
+        UrlGeneratorInterface $urlGenerator,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
+        $this->userRepository = $userRepository;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
@@ -64,15 +69,14 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider): User
+    public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (false === $this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
 
-        /** @var User|null $user */
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+        $user = $this->userRepository->findOneBy(['email' => $credentials['email']]);
 
         if (null === $user) {
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
@@ -104,9 +108,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
     }
 
     /**
-     * @param string $providerKey
-     *
-     * @throws \Exception
+     * @throws Exception
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
     {

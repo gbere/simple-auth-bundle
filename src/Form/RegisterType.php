@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Form;
 
-use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Entity\UserInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -32,7 +32,7 @@ class RegisterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => UserInterface::class,
         ]);
     }
 }

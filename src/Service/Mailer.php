@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Service;
 
-use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Entity\UserInterface;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -27,7 +27,7 @@ class Mailer
     /**
      * @throws TransportExceptionInterface
      */
-    public function sendConfirmRegistrationMessage(User $user): void
+    public function sendConfirmRegistrationMessage(UserInterface $user): void
     {
         $this->mailer->send((new NotificationEmail())
             ->from($this->getSenderEmail())
@@ -41,7 +41,7 @@ class Mailer
     /**
      * @throws TransportExceptionInterface
      */
-    public function sendWelcomeMessage(User $user): void
+    public function sendWelcomeMessage(UserInterface $user): void
     {
         $this->mailer->send((new NotificationEmail())
             ->from($this->getSenderEmail())
@@ -55,7 +55,7 @@ class Mailer
     /**
      * @throws TransportExceptionInterface
      */
-    public function sendPasswordResetMessage(User $user): void
+    public function sendPasswordResetMessage(UserInterface $user): void
     {
         $this->mailer->send((new NotificationEmail())
             ->from($this->getSenderEmail())
@@ -69,7 +69,7 @@ class Mailer
     /**
      * @throws TransportExceptionInterface
      */
-    public function sendPasswordResetNotificationMessage(User $user): void
+    public function sendPasswordResetNotificationMessage(UserInterface $user): void
     {
         $this->mailer->send((new NotificationEmail())
             ->from($this->getSenderEmail())

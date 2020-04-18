@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Gbere\SimpleAuth\Controller;
 
 use Exception;
-use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Entity\UserInterface;
 use Gbere\SimpleAuth\Form\RegisterType;
+use Gbere\SimpleAuth\Repository\UserRepository;
 use Gbere\SimpleAuth\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class RegisterController extends AbstractController
 {
@@ -23,25 +23,23 @@ final class RegisterController extends AbstractController
      * @throws TransportExceptionInterface
      * @throws Exception
      */
-    public function __invoke(Request $request, UserPasswordEncoderInterface $passwordEncoder, Mailer $mailer): Response
+    public function __invoke(Request $request, UserRepository $userRepository, Mailer $mailer): Response
     {
-        $user = new User();
+        $user = $userRepository->createUser();
         $form = $this->createForm(RegisterType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
+            /** @var UserInterface $user */
             $user = $form->getData();
-            $manager = $this->getDoctrine()->getManager();
-            $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword() ?? ''));
+            $user->setPassword($userRepository->encodePassword($user->getPassword() ?? ''));
             if (false === $this->getParameter('email.validate')) {
                 $user->hasEnabled(true);
             } else {
                 $user->generateToken();
                 $mailer->sendConfirmRegistrationMessage($user);
-                $this->addFlash('success', sprintf('An email was sent to %s email', $user->getEmail()));
+                $this->addFlash('success', sprintf('An email was sent to %s', $user->getEmail()));
             }
-            $manager->persist($user);
-            $manager->flush();
+            $userRepository->persistAndFlush($user);
 
             return $this->redirectToRoute('gbere_auth_login');
         }

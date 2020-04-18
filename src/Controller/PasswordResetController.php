@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
-use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Repository\UserRepository;
 use Gbere\SimpleAuth\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -16,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class PasswordResetController extends AbstractController
 {
@@ -28,12 +26,9 @@ final class PasswordResetController extends AbstractController
      * @throws OptimisticLockException
      * @throws TransportExceptionInterface
      */
-    public function __invoke(string $token, Request $request, UserPasswordEncoderInterface $passwordEncoder, Mailer $mailer): Response
+    public function __invoke(string $token, Request $request, UserRepository $userRepository, Mailer $mailer): Response
     {
-        /** @var EntityManager $manager */
-        $manager = $this->getDoctrine()->getManager();
-        /** @var User|null $user */
-        $user = $manager->getRepository(User::class)->findOneBy(['confirmationToken' => $token]);
+        $user = $userRepository->findOneBy(['confirmationToken' => $token]);
         if (null === $user) {
             $this->addFlash('warning', 'The token is invalid');
 
@@ -43,11 +38,10 @@ final class PasswordResetController extends AbstractController
         $form = $this->createFormBuilder()->add('plainPassword', PasswordType::class)->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($passwordEncoder->encodePassword($user, $form->get('plainPassword')->getData()));
+            $user->setPassword($userRepository->encodePassword($form->get('plainPassword')->getData()));
             $user->hasEnabled(true);
             $user->setConfirmationToken(null);
-            $manager->persist($user);
-            $manager->flush();
+            $userRepository->persistAndFlush($user);
             $this->addFlash('success', 'The password was updated');
             $mailer->sendPasswordResetNotificationMessage($user);
 
