@@ -27,3 +27,31 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    Gbere\SimpleAuth\Service\Mailer:
+        arguments:
+                ['@mailer.mailer', '@parameter_bag']
+    gbere_simple_auth.mailer:
+        alias: Gbere\SimpleAuth\Service\Mailer
+
+
+    Gbere\SimpleAuth\Entity\User:
+    gbere_simple_auth.entity.user:
+        alias: Gbere\SimpleAuth\Entity\User
+
+    Gbere\SimpleAuth\Repository\UserRepository:
+        arguments:
+                ['@Doctrine\Common\Persistence\ManagerRegistry', '@gbere_simple_auth.entity.user']
+    gbere_simple_auth.repository.user_repository:
+        alias: Gbere\SimpleAuth\Repository\UserRepository
+
+
+    Gbere\SimpleAuth\Entity\AdminUser:
+    gbere_simple_auth.entity.admin_user:
+        alias: Gbere\SimpleAuth\Entity\AdminUser
+
+    Gbere\SimpleAuth\Repository\AdminUserRepository:
+        arguments:
+                ['@Doctrine\Common\Persistence\ManagerRegistry', '@gbere_simple_auth.entity.admin_user']
+    gbere_simple_auth.repository.admin_user_repository:
+        alias: Gbere\SimpleAuth\Repository\AdminUserRepository

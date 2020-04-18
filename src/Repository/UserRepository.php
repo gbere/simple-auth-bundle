@@ -6,30 +6,38 @@ namespace Gbere\SimpleAuth\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Gbere\SimpleAuth\Entity\User;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Gbere\SimpleAuth\Entity\UserInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method UserInterface|null find($id, $lockMode = null, $lockVersion = null)
+ * @method UserInterface|null findOneBy(array $criteria, array $orderBy = null)
+ * @method UserInterface[]    findAll()
+ * @method UserInterface[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    /** @var UserPasswordEncoderInterface */
+    protected $passwordEncoder;
+
+    public function __construct(ManagerRegistry $registry, UserInterface $user, UserPasswordEncoderInterface $passwordEncoder)
     {
-        parent::__construct($registry, User::class);
+        $this->passwordEncoder = $passwordEncoder;
+
+        parent::__construct($registry, \get_class($user));
     }
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    public function upgradePassword($user, string $newEncodedPassword): void
     {
-        if (!$user instanceof User) {
+        if (!$user instanceof UserInterface) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
@@ -38,32 +46,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function createUser(): UserInterface
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return new $this->_entityName();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?User
+    public function encodePassword(string $password): string
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->passwordEncoder->encodePassword(new $this->_entityName(), $password);
     }
-    */
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function persistAndFlush(UserInterface $user): void
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
 }
