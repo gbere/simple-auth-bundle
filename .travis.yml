@@ -46,6 +46,7 @@ script:
   - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/phpstan analyse src/ -c phpstan.neon --no-progress -vvv --memory-limit=1024M'
   - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/phpstan analyse tests/ -c phpstan-tests.neon --no-progress -vvv --memory-limit=1024M'
   - composer validate
+  - ./bin/console lint:container
 
 notifications:
   email: false

@@ -1,0 +1,3 @@
+gbere_simple_auth:
+    user:
+        entity: Gbere\SimpleAuth\Entity\User
