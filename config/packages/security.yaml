@@ -27,7 +27,7 @@ security:
             remember_me:
                 secret:   '%kernel.secret%'
                 lifetime: 2592000 # 30 days in seconds
-                
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -40,8 +40,4 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # Tests
-        - { path: ^/gbere-auth-test-role-admin, roles: ROLE_ADMIN }
-        - { path: ^/gbere-auth-test-role-user, roles: ROLE_USER }
-        # End tests
         - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
