@@ -17,6 +17,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('user')
+                ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('entity')->defaultValue(User::class)->end()
                     ->end()
