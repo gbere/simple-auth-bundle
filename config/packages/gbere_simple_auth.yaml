@@ -1,3 +1,6 @@
 gbere_simple_auth:
     user:
         entity: Gbere\SimpleAuth\Entity\User
+        encoder_algorithm: auto
+    # remember_me_lifetime: ~       # Disabled
+    remember_me_lifetime: 604800    # 604800 = 7 days in seconds

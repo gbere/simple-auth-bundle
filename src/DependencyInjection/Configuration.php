@@ -20,8 +20,10 @@ class Configuration implements ConfigurationInterface
                 ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('entity')->defaultValue(User::class)->end()
+                        ->scalarNode('encoder_algorithm')->defaultValue('auto')->end()
                     ->end()
                 ->end()
+                ->scalarNode('remember_me_lifetime')->defaultValue(null)->end()
             ->end()
         ;
 
