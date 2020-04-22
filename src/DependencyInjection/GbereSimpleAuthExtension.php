@@ -13,6 +13,14 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class GbereSimpleAuthExtension extends Extension implements PrependExtensionInterface
 {
+    private const TESTING_ROUTES = [
+        ['path' => '^/gbere-auth-test-role-admin', 'role' => 'ROLE_ADMIN'],
+        ['path' => '^/gbere-auth-test-role-user', 'role' => 'ROLE_USER'],
+    ];
+
+    /** @var array|null */
+    private $securityConf;
+
     /**
      * @throws Exception
      */
@@ -28,19 +36,30 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
     public function prepend(ContainerBuilder $container): void
     {
         if ('test' === $container->getParameter('kernel.environment')) {
-            // https://github.com/symfony/symfony/issues/24461#issuecomment-355839669
-            $extensionConfigsRefl = new \ReflectionProperty(ContainerBuilder::class, 'extensionConfigs');
-            $extensionConfigsRefl->setAccessible(true);
-            $extensionConfigs = $extensionConfigsRefl->getValue($container);
-            $extensionConfigs['security'][0]['access_control'] = array_merge(
-                [
-                    ['path' => '^/gbere-auth-test-role-admin', 'role' => 'ROLE_ADMIN'],
-                    ['path' => '^/gbere-auth-test-role-user', 'role' => 'ROLE_USER'],
-                ],
-                $extensionConfigs['security'][0]['access_control']
-            );
-
-            $extensionConfigsRefl->setValue($container, $extensionConfigs);
+            $this->securityConf['access_control'] = self::TESTING_ROUTES;
         }
+
+        $this->updateSecurityConfig($container);
+    }
+
+    private function updateSecurityConfig(ContainerBuilder $container): void
+    {
+        if (null === $this->securityConf) {
+            return;
+        }
+
+        $extensionConfigsRefl = new \ReflectionProperty(ContainerBuilder::class, 'extensionConfigs');
+        $extensionConfigsRefl->setAccessible(true);
+        $extensionConfigs = $extensionConfigsRefl->getValue($container);
+
+        foreach ($this->securityConf as $section => $configs) {
+            if (isset($extensionConfigs['security'][0][$section])) {
+                $extensionConfigs['security'][0][$section] = array_merge($configs, $extensionConfigs['security'][0][$section]);
+            } else {
+                $extensionConfigs['security'][0][$section] = $configs;
+            }
+        }
+
+        $extensionConfigsRefl->setValue($container, $extensionConfigs);
     }
 }
