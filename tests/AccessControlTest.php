@@ -7,6 +7,7 @@ namespace Gbere\SimpleAuth\Tests;
 use Doctrine\ORM\EntityManager;
 use Gbere\SimpleAuth\Entity\AdminUser;
 use Gbere\SimpleAuth\Entity\User;
+use Gbere\SimpleAuth\Security\Constant;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
@@ -17,9 +18,6 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 
 final class AccessControlTest extends WebTestCase
 {
-    private const FIREWALL_NAME = 'gbere_auth_main_firewall';
-    private const PROVIDER_NAME = 'gbere_auth_main_provider';
-
     /** @var KernelBrowser */
     private $client = null;
 
@@ -30,9 +28,9 @@ final class AccessControlTest extends WebTestCase
 
     public function testAnonymousUser(): void
     {
-        $this->client->request('GET', '/gbere-auth-test-role-user');
+        $this->client->request('GET', $this->getUriForTestByRole('ROLE_USER'));
         $this->assertResponseRedirects();
-        $this->client->request('GET', '/gbere-auth-test-role-admin');
+        $this->client->request('GET', $this->getUriForTestByRole('ROLE_ADMIN'));
         $this->assertResponseRedirects();
         $this->client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
@@ -41,24 +39,40 @@ final class AccessControlTest extends WebTestCase
     public function testRoleUser(): void
     {
         $this->logIn('role-user@fixture.com');
-        $this->client->request('GET', '/gbere-auth-test-role-user');
+        $this->client->request('GET', $this->getUriForTestByRole('ROLE_USER'));
         $this->assertResponseIsSuccessful();
-        $this->client->request('GET', '/gbere-auth-test-role-admin');
+        $this->client->request('GET', $this->getUriForTestByRole('ROLE_ADMIN'));
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testRoleAdmin(): void
     {
         $this->logIn('role-admin@fixture.com');
-        $this->client->request('GET', '/gbere-auth-test-role-admin');
+        $this->client->request('GET', $this->getUriForTestByRole('ROLE_ADMIN'));
         $this->assertResponseIsSuccessful();
     }
 
     public function testAdminUser(): void
     {
         $this->logIn('admin-user@fixture.com', true);
-        $this->client->request('GET', '/gbere-auth-test-role-admin');
+        $this->client->request('GET', $this->getUriForTestByRole('ROLE_ADMIN'));
         $this->assertResponseIsSuccessful();
+    }
+
+    private function getUriForTestByRole(string $role): string
+    {
+        foreach (Constant::TESTING_ROUTES as $route) {
+            if ($role === $route['role']) {
+                return $this->routePathToUri($route['path']);
+            }
+        }
+
+        throw new \LogicException('There is no route with that role');
+    }
+
+    private function routePathToUri(string $path): string
+    {
+        return trim($path, '^');
     }
 
     private function logIn(string $email, bool $isAdminUser = false): void
@@ -67,12 +81,12 @@ final class AccessControlTest extends WebTestCase
         $token = new UsernamePasswordToken(
             $user->getUsername(),
             $user->getPassword(),
-            self::PROVIDER_NAME,
+            Constant::PROVIDER_NAME,
             $user->getRoles()
         );
         /** @var Session<Session> $session */
         $session = self::$container->get('session');
-        $session->set('_security_'.self::FIREWALL_NAME, serialize($token));
+        $session->set('_security_'.Constant::FIREWALL_NAME, serialize($token));
         $session->save();
         $cookie = new Cookie($session->getName(), $session->getId());
         $this->client->getCookieJar()->set($cookie);
