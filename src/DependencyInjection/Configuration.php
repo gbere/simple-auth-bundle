@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\DependencyInjection;
 
+use Gbere\SimpleAuth\Entity\User;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -18,8 +19,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('user')
                 ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('entity')->cannotBeEmpty()->end()
-                        ->scalarNode('encoder_algorithm')->cannotBeEmpty()->end()
+                        ->scalarNode('entity')->defaultValue(User::class)->end()
+                        ->scalarNode('encoder_algorithm')->defaultValue('auto')->end()
                     ->end()
                 ->end()
                 ->scalarNode('remember_me_lifetime')->defaultValue(null)->end()

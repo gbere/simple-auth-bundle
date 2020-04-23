@@ -24,7 +24,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
     /** @var array|null */
     private $securityConfig;
     /** @var array|null */
-    private $prependConfig;
+    private $config;
 
     /**
      * @throws Exception
@@ -40,23 +40,26 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
 
     public function prepend(ContainerBuilder $container): void
     {
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $this->config = $this->processConfiguration(new Configuration(), $configs);
+
         if ('test' === $container->getParameter('kernel.environment')) {
             $this->securityConfig['access_control'] = self::TESTING_ROUTES;
         }
 
-        $this->prependConfig = $container->getExtensionConfig($this->getAlias());
         $this->addEncodersSection();
         $this->addProvidersSection();
         $this->addFirewallSection();
+
         $this->updateSecurityConfig($container);
     }
 
     private function addEncodersSection(): void
     {
-        if (isset($this->prependConfig[0]['user'])) {
+        if (isset($this->config['user'])) {
             $this->securityConfig['encoders'] = [
-                $this->prependConfig[0]['user']['entity'] => [
-                    'algorithm' => $this->prependConfig[0]['user']['encoder_algorithm'],
+                $this->config['user']['entity'] => [
+                    'algorithm' => $this->config['user']['encoder_algorithm'],
                 ],
                 // TODO:
                 'Gbere\SimpleAuth\Entity\AdminUser' => [
@@ -68,11 +71,11 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
 
     private function addProvidersSection(): void
     {
-        if (isset($this->prependConfig[0]['user'])) {
+        if (isset($this->config['user'])) {
             $this->securityConfig['providers'] = [
                 self::SECURITY_PROVIDER_NAME => [
                     'entity' => [
-                        'class' => $this->prependConfig[0]['user']['entity'],
+                        'class' => $this->config['user']['entity'],
                         'property' => 'email',
                     ],
                 ],
@@ -95,10 +98,10 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
             ],
         ];
 
-        if (isset($this->prependConfig[0]['remember_me_lifetime']) && null != $this->prependConfig[0]['remember_me_lifetime']) {
+        if (isset($this->config['remember_me_lifetime']) && null != $this->config['remember_me_lifetime']) {
             $this->securityConfig['firewalls'][self::SECURITY_FIREWALL_NAME]['remember_me'] = [
                 'secret' => '%kernel.secret%',
-                'lifetime' => $this->prependConfig[0]['remember_me_lifetime'],
+                'lifetime' => $this->config['remember_me_lifetime'],
             ];
         }
     }
