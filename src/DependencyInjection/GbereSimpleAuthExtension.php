@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Gbere\SimpleAuth\DependencyInjection;
 
 use Exception;
+use Gbere\SimpleAuth\Repository\UserRepository;
 use Gbere\SimpleAuth\Security\LoginFormAuthenticator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -34,8 +36,8 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
 
-        $configuration = $this->getConfiguration($configs, $container);
-        $config = $this->processConfiguration($configuration, $configs);
+        $definition = $container->getDefinition(UserRepository::class);
+        $definition->setArgument(1, new Definition($this->config['user']['entity']));
     }
 
     public function prepend(ContainerBuilder $container): void

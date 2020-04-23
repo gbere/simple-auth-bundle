@@ -21,7 +21,7 @@ services:
     Gbere\SimpleAuth\Entity\User:
     Gbere\SimpleAuth\Repository\UserRepository:
         arguments:
-                ['@Doctrine\Common\Persistence\ManagerRegistry', '@Gbere\SimpleAuth\Entity\User']
+                ['@Doctrine\Common\Persistence\ManagerRegistry']
 
     Gbere\SimpleAuth\Entity\AdminUser:
     Gbere\SimpleAuth\Repository\AdminUserRepository:
