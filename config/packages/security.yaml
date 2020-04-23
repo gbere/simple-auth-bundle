@@ -1,11 +1,4 @@
 security:
-    encoders:
-        Gbere\SimpleAuth\Entity\User:
-            algorithm: auto
-        Gbere\SimpleAuth\Entity\AdminUser:
-            algorithm: auto
-
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         gbere_auth_main_provider:
