@@ -1,10 +1,4 @@
 security:
-    providers:
-        # used to reload user from session & other features (e.g. switch_user)
-        gbere_auth_main_provider:
-            entity:
-                class: Gbere\SimpleAuth\Entity\User
-                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

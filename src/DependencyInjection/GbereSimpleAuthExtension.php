@@ -17,6 +17,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         ['path' => '^/gbere-auth-test-role-admin', 'role' => 'ROLE_ADMIN'],
         ['path' => '^/gbere-auth-test-role-user', 'role' => 'ROLE_USER'],
     ];
+    private const SECURITY_PROVIDER_NAME = 'gbere_auth_main_provider';
 
     /** @var array|null */
     private $securityConfig;
@@ -43,6 +44,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
 
         $this->prependConfig = $container->getExtensionConfig($this->getAlias());
         $this->addEncodersSection();
+        $this->addProvidersSection();
         $this->updateSecurityConfig($container);
     }
 
@@ -56,6 +58,20 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
                 // TODO:
                 'Gbere\SimpleAuth\Entity\AdminUser' => [
                     'algorithm' => 'auto',
+                ],
+            ];
+        }
+    }
+
+    private function addProvidersSection(): void
+    {
+        if (isset($this->prependConfig[0]['user'])) {
+            $this->securityConfig['providers'] = [
+                self::SECURITY_PROVIDER_NAME => [
+                    'entity' => [
+                        'class' => $this->prependConfig[0]['user']['entity'],
+                        'property' => 'email',
+                    ],
                 ],
             ];
         }
