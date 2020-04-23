@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Gbere\SimpleAuth\DependencyInjection;
 
 use Exception;
+use Gbere\SimpleAuth\Security\LoginFormAuthenticator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -18,6 +19,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         ['path' => '^/gbere-auth-test-role-user', 'role' => 'ROLE_USER'],
     ];
     private const SECURITY_PROVIDER_NAME = 'gbere_auth_main_provider';
+    private const SECURITY_FIREWALL_NAME = 'gbere_auth_main_firewall';
 
     /** @var array|null */
     private $securityConfig;
@@ -45,6 +47,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         $this->prependConfig = $container->getExtensionConfig($this->getAlias());
         $this->addEncodersSection();
         $this->addProvidersSection();
+        $this->addFirewallSection();
         $this->updateSecurityConfig($container);
     }
 
@@ -77,6 +80,29 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         }
     }
 
+    private function addFirewallSection(): void
+    {
+        $this->securityConfig['firewalls'] = [
+            self::SECURITY_FIREWALL_NAME => [
+                'anonymous' => 'lazy',
+                'provider' => self::SECURITY_PROVIDER_NAME,
+                'guard' => [
+                    'authenticators' => [LoginFormAuthenticator::class],
+                ],
+                'logout' => [
+                    'path' => 'gbere_auth_logout',
+                ],
+            ],
+        ];
+
+        if (isset($this->prependConfig[0]['remember_me_lifetime']) && null != $this->prependConfig[0]['remember_me_lifetime']) {
+            $this->securityConfig['firewalls'][self::SECURITY_FIREWALL_NAME]['remember_me'] = [
+                'secret' => '%kernel.secret%',
+                'lifetime' => $this->prependConfig[0]['remember_me_lifetime'],
+            ];
+        }
+    }
+
     private function updateSecurityConfig(ContainerBuilder $container): void
     {
         if (null === $this->securityConfig) {
@@ -89,7 +115,12 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
 
         foreach ($this->securityConfig as $section => $configs) {
             if (isset($extensionConfigs['security'][0][$section])) {
-                $extensionConfigs['security'][0][$section] = array_merge($configs, $extensionConfigs['security'][0][$section]);
+                // gbere_auth_main_firewall must be inserted after the firewall->dev
+                if ('firewalls' === $section) {
+                    $extensionConfigs['security'][0][$section] = array_merge($extensionConfigs['security'][0][$section], $configs);
+                } else {
+                    $extensionConfigs['security'][0][$section] = array_merge($configs, $extensionConfigs['security'][0][$section]);
+                }
             } else {
                 $extensionConfigs['security'][0][$section] = $configs;
             }
