@@ -40,17 +40,22 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         $this->config = $this->processConfiguration(new Configuration(), $configs);
 
         if ('test' === $container->getParameter('kernel.environment')) {
-            $this->securityConfig['access_control'] = constant::TESTING_ROUTES;
+            $this->addSecurityTestingRoutesConfig();
         }
 
-        $this->addEncodersSection();
-        $this->addProvidersSection();
-        $this->addFirewallSection();
+        $this->addSecurityEncodersConfig();
+        $this->addSecurityProvidersConfig();
+        $this->addSecurityFirewallConfig();
 
-        $this->updateSecurityConfig($container);
+        $this->updateSecurityExtensionConfig($container);
     }
 
-    private function addEncodersSection(): void
+    private function addSecurityTestingRoutesConfig(): void
+    {
+        $this->securityConfig['access_control'] = constant::TESTING_ROUTES;
+    }
+
+    private function addSecurityEncodersConfig(): void
     {
         if (isset($this->config['user'])) {
             $this->securityConfig['encoders'] = [
@@ -65,7 +70,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         }
     }
 
-    private function addProvidersSection(): void
+    private function addSecurityProvidersConfig(): void
     {
         if (isset($this->config['user'])) {
             $this->securityConfig['providers'] = [
@@ -79,7 +84,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         }
     }
 
-    private function addFirewallSection(): void
+    private function addSecurityFirewallConfig(): void
     {
         $this->securityConfig['firewalls'] = [
             Constant::FIREWALL_NAME => [
@@ -102,7 +107,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         }
     }
 
-    private function updateSecurityConfig(ContainerBuilder $container): void
+    private function updateSecurityExtensionConfig(ContainerBuilder $container): void
     {
         if (null === $this->securityConfig) {
             return;
