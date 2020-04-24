@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Gbere\SimpleAuth\DependencyInjection;
 
 use Exception;
+use Gbere\SimpleAuth\Repository\AdminUserRepository;
 use Gbere\SimpleAuth\Repository\UserRepository;
 use Gbere\SimpleAuth\Security\Constant;
 use Gbere\SimpleAuth\Security\LoginFormAuthenticator;
@@ -32,6 +33,9 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
 
         $definition = $container->getDefinition(UserRepository::class);
         $definition->setArgument(1, new Definition($this->config['user']['entity']));
+
+        $definition = $container->getDefinition(AdminUserRepository::class);
+        $definition->setArgument(1, new Definition($this->config['admin_user']['entity']));
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -62,9 +66,8 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
                 $this->config['user']['entity'] => [
                     'algorithm' => $this->config['user']['encoder_algorithm'],
                 ],
-                // TODO:
-                'Gbere\SimpleAuth\Entity\AdminUser' => [
-                    'algorithm' => 'auto',
+                $this->config['admin_user']['entity'] => [
+                    'algorithm' => $this->config['admin_user']['encoder_algorithm'],
                 ],
             ];
         }
