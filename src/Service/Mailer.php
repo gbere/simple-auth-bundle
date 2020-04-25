@@ -79,8 +79,11 @@ class Mailer
         );
     }
 
-    private function getSenderEmail(): string
+    private function getSenderEmail(): Address
     {
-        return $this->parameterBag->get('email.sender');
+        return new Address(
+            $this->parameterBag->get('simple_auth_sender_email'),
+            $this->parameterBag->get('simple_auth_sender_name') ?? ''
+        );
     }
 }

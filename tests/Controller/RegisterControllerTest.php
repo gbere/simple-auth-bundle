@@ -64,6 +64,6 @@ class RegisterControllerTest extends WebTestCase
 
     private function isValidateEmailRequired(): bool
     {
-        return self::$container->getParameter('email.validate');
+        return self::$container->getParameter('simple_auth_confirm_registration_by_email');
     }
 }

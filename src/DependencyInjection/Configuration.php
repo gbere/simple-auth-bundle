@@ -17,6 +17,13 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
         $rootNode
             ->children()
+                ->arrayNode('sender')
+                ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('email')->defaultValue('sender@email.com')->end()
+                        ->scalarNode('name')->defaultValue('Sender Name')->end()
+                    ->end()
+                ->end()
                 ->arrayNode('user')
                 ->addDefaultsIfNotSet()
                     ->children()
@@ -31,7 +38,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('encoder_algorithm')->defaultValue('auto')->end()
                     ->end()
                 ->end()
-                ->scalarNode('remember_me_lifetime')->defaultValue(null)->end()
+                ->integerNode('remember_me_lifetime')->defaultValue(null)->end()
+                ->booleanNode('confirm_registration_by_email')->defaultValue(true)->end()
             ->end()
         ;
 
