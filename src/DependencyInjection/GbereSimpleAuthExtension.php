@@ -11,9 +11,9 @@ use Gbere\SimpleAuth\Security\Constant;
 use Gbere\SimpleAuth\Security\LoginFormAuthenticator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class GbereSimpleAuthExtension extends Extension implements PrependExtensionInterface
@@ -32,10 +32,10 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         $loader->load('services.yaml');
 
         $definition = $container->getDefinition(UserRepository::class);
-        $definition->setArgument(1, new Definition($this->config['user']['entity']));
+        $definition->setArgument(1, new Reference($this->config['user']['entity']));
 
         $definition = $container->getDefinition(AdminUserRepository::class);
-        $definition->setArgument(1, new Definition($this->config['admin_user']['entity']));
+        $definition->setArgument(1, new Reference($this->config['admin_user']['entity']));
 
         $container->setParameter('simple_auth_sender_email', $this->config['sender']['email']);
         $container->setParameter('simple_auth_sender_name', $this->config['sender']['name']);

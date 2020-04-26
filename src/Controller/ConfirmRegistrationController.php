@@ -42,7 +42,7 @@ final class ConfirmRegistrationController extends AbstractController
         $user->hasEnabled(true);
         $user->setConfirmationToken(null);
         $userRepository->persistAndFlush($user);
-        $this->addFlash('success', 'The user has been successfully activated');
+        $this->addFlash('success', 'The user has been successfully enabled');
         $mailer->sendWelcomeMessage($user);
 
         // TODO: Auto login after validate?
