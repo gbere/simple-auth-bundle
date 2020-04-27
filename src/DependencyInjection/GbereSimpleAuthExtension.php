@@ -126,8 +126,12 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
 
         foreach ($this->securityConfig as $section => $configs) {
             if (isset($extensionConfigs['security'][0][$section])) {
-                // Constant::FIREWALL_NAME must be inserted after the firewall->dev
                 if ('firewalls' === $section) {
+                    // added after firewall->dev and before firewall->main
+                    if (isset($extensionConfigs['security'][0][$section]['main'])) {
+                        $configs['main'] = $extensionConfigs['security'][0][$section]['main'];
+                        unset($extensionConfigs['security'][0][$section]['main']);
+                    }
                     $extensionConfigs['security'][0][$section] = array_merge($extensionConfigs['security'][0][$section], $configs);
                 } else {
                     $extensionConfigs['security'][0][$section] = array_merge($configs, $extensionConfigs['security'][0][$section]);
