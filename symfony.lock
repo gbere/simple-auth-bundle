@@ -5,7 +5,16 @@
     "ocramius/proxy-manager": {
         "version": "2.2.3"
     },
+    "paragonie/random_compat": {
+        "version": "v9.99.99"
+    },
     "php": {
         "version": "7.3"
+    },
+    "symfony/polyfill-ctype": {
+        "version": "v1.15.0"
+    },
+    "symfony/polyfill-php70": {
+        "version": "v1.15.0"
     }
 }
