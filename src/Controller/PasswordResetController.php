@@ -48,6 +48,6 @@ final class PasswordResetController extends AbstractController
             return $this->redirectToRoute('gbere_auth_login');
         }
 
-        return $this->render('frontend/password-reset.html.twig', ['form' => $form->createView()]);
+        return $this->render('@GbereSimpleAuth/frontend/password-reset.html.twig', ['form' => $form->createView()]);
     }
 }

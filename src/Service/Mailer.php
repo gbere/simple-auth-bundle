@@ -33,7 +33,7 @@ class Mailer
             ->from($this->getSenderEmail())
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Confirm registration')
-            ->htmlTemplate('emails/confirm-registration.html.twig')
+            ->htmlTemplate('@GbereSimpleAuth/emails/confirm-registration.html.twig')
             ->context(['token' => $user->getConfirmationToken()])
         );
     }
@@ -47,7 +47,7 @@ class Mailer
             ->from($this->getSenderEmail())
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Welcome')
-            ->htmlTemplate('emails/welcome.html.twig')
+            ->htmlTemplate('@GbereSimpleAuth/emails/welcome.html.twig')
             ->context(['token' => $user->getConfirmationToken()])
         );
     }
@@ -61,7 +61,7 @@ class Mailer
             ->from($this->getSenderEmail())
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Password request')
-            ->htmlTemplate('emails/password-reset.html.twig')
+            ->htmlTemplate('@GbereSimpleAuth/emails/password-reset.html.twig')
             ->context(['token' => $user->getConfirmationToken()])
         );
     }
@@ -75,7 +75,7 @@ class Mailer
             ->from($this->getSenderEmail())
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Password reset notification')
-            ->htmlTemplate('emails/password-reset-notification.html.twig')
+            ->htmlTemplate('@GbereSimpleAuth/emails/password-reset-notification.html.twig')
         );
     }
 

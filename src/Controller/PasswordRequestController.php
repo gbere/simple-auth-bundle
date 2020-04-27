@@ -47,7 +47,7 @@ final class PasswordRequestController extends AbstractController
             $this->addFlash('warning', sprintf('The email %s isn\'t registered', $email));
         }
 
-        return $this->render('frontend/password-request.html.twig', [
+        return $this->render('@GbereSimpleAuth/frontend/password-request.html.twig', [
             'form' => $form->createView(),
         ]);
     }

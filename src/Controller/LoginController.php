@@ -19,7 +19,7 @@ final class LoginController extends AbstractController
         $lastAuthError = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('frontend/login.html.twig', [
+        return $this->render('@GbereSimpleAuth/frontend/login.html.twig', [
             'last_username' => $lastUsername,
             'last_auth_error' => $lastAuthError,
         ]);

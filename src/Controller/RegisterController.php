@@ -44,7 +44,7 @@ final class RegisterController extends AbstractController
             return $this->redirectToRoute('gbere_auth_login');
         }
 
-        return $this->render('frontend/register.html.twig', [
+        return $this->render('@GbereSimpleAuth/frontend/register.html.twig', [
             'form' => $form->createView(),
         ]);
     }
