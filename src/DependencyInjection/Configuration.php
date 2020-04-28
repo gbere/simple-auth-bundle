@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->integerNode('remember_me_lifetime')->defaultValue(null)->end()
-                ->booleanNode('confirm_registration_by_email')->defaultValue(true)->end()
+                ->booleanNode('confirm_registration')->defaultValue(true)->end()
             ->end()
         ;
 

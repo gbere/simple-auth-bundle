@@ -32,7 +32,7 @@ final class RegisterController extends AbstractController
             /** @var UserInterface $user */
             $user = $form->getData();
             $user->setPassword($userRepository->encodePassword($user->getPassword() ?? ''));
-            if ((bool) $this->getParameter('simple_auth_confirm_registration_by_email')) {
+            if ((bool) $this->getParameter('simple_auth_confirm_registration')) {
                 $user->generateToken();
                 $mailer->sendConfirmRegistrationMessage($user);
                 $this->addFlash('success', sprintf('An email was sent to %s', $user->getEmail()));

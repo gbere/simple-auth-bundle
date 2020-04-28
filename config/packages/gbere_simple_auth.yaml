@@ -5,6 +5,6 @@ gbere_simple_auth:
     user:
         entity: Gbere\SimpleAuth\Entity\User
         encoder_algorithm: auto
-    confirm_registration_by_email: true
+    confirm_registration: true
     # remember_me_lifetime: ~       # Disabled
     remember_me_lifetime: 604800    # 604800 = 7 days in seconds
