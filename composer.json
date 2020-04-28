@@ -1,8 +1,8 @@
 {
     "name": "gbere/simple-auth-bundle",
     "description": "gBere simple auth bundle",
-    "type": "library",
-    "keywords": ["simple auth", "auth", "bundle", "simple-auth-bundle", "gbere"],
+    "type": "symfony-bundle",
+    "keywords": ["simple auth", "auth bundle", "simple auth bundle", "gbere"],
     "homepage": "https://github.com/gbere/simple-auth-bundle",
     "license": "MIT",
     "authors": [
