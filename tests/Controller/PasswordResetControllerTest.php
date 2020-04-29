@@ -9,6 +9,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Gbere\SimpleAuth\Entity\User;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Mime\Address;
 
@@ -17,6 +18,8 @@ class PasswordResetControllerTest extends WebTestCase
     private const EMAIL = 'role-user@fixture.com';
     private const PASSWORD = 'role-user';
 
+    /** @var KernelBrowser */
+    private $client = null;
     /** @var User|null */
     private $user;
     /** @var EntityManager|null */
@@ -24,8 +27,8 @@ class PasswordResetControllerTest extends WebTestCase
 
     public function setUp(): void
     {
-        self::bootKernel();
-        $this->manager = self::$container->get('doctrine.orm.entity_manager');
+        $this->client = static::createClient();
+        $this->manager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -35,9 +38,8 @@ class PasswordResetControllerTest extends WebTestCase
     {
         $this->loadUser();
         $this->disableUser();
-        $client = static::createClient();
-        $client->request('GET', $this->generatePasswordResetRoute());
-        $client->submitForm('Password reset', [
+        $this->client->request('GET', $this->generatePasswordResetRoute());
+        $this->client->submitForm('Password reset', [
             'form[plainPassword]' => self::PASSWORD,
         ]);
         $this->assertEmailCount(1);
@@ -67,7 +69,7 @@ class PasswordResetControllerTest extends WebTestCase
 
     private function generatePasswordResetRoute(): string
     {
-        return self::$container->get('router')->generate(
+        return $this->client->getContainer()->get('router')->generate(
             'gbere_auth_password_reset',
             ['token' => $this->user->getConfirmationToken()]
         );

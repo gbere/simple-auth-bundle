@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Gbere\SimpleAuth\Entity\User;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Mime\Address;
 
@@ -17,9 +18,12 @@ class RegisterControllerTest extends WebTestCase
     private const NAME = 'Test';
     private const PASSWORD = 'patata';
 
+    /** @var KernelBrowser */
+    private $client = null;
+
     public function setUp(): void
     {
-        self::bootKernel();
+        $this->client = static::createClient();
     }
 
     /**
@@ -29,9 +33,8 @@ class RegisterControllerTest extends WebTestCase
     public function testRegisterForm(): void
     {
         $this->removeTestUserIfExist();
-        $client = static::createClient();
-        $client->request('GET', '/register');
-        $client->submitForm('Submit', [
+        $this->client->request('GET', '/register');
+        $this->client->submitForm('Submit', [
             'register[email]' => self::EMAIL,
             'register[name]' => self::NAME,
             'register[password][first]' => self::PASSWORD,
@@ -53,7 +56,7 @@ class RegisterControllerTest extends WebTestCase
     private function removeTestUserIfExist(): void
     {
         /** @var EntityManager $manager */
-        $manager = self::$container->get('doctrine.orm.entity_manager');
+        $manager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
         /** @var User|null $user */
         $user = $manager->getRepository(User::class)->findOneBy(['email' => self::EMAIL]);
         if (null !== $user) {

@@ -11,6 +11,9 @@
     "php": {
         "version": "7.3"
     },
+    "psr/event-dispatcher": {
+        "version": "1.0.0"
+    },
     "symfony/polyfill-ctype": {
         "version": "v1.15.0"
     },

@@ -6,6 +6,7 @@ namespace Gbere\SimpleAuth\Tests\Controller;
 
 use Exception;
 use Gbere\SimpleAuth\Entity\User;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Mime\Address;
 
@@ -13,9 +14,12 @@ class PasswordRequestControllerTest extends WebTestCase
 {
     private const EMAIL = 'role-user@fixture.com';
 
+    /** @var KernelBrowser */
+    private $client = null;
+
     public function setUp(): void
     {
-        self::bootKernel();
+        $this->client = static::createClient();
     }
 
     /**
@@ -23,10 +27,9 @@ class PasswordRequestControllerTest extends WebTestCase
      */
     public function testPasswordRequestForm(): void
     {
-        $client = static::createClient();
         $user = $this->findUserByEmail(self::EMAIL);
-        $client->request('GET', 'password/request');
-        $client->submitForm('Submit', [
+        $this->client->request('GET', 'password/request');
+        $this->client->submitForm('Submit', [
             'form[email]' => $user->getEmail(),
         ]);
         $this->assertEmailCount(1);
@@ -38,7 +41,7 @@ class PasswordRequestControllerTest extends WebTestCase
 
     private function findUserByEmail(string $email): ?User
     {
-        return self::$container->get('doctrine.orm.entity_manager')
+        return $this->client->getContainer()->get('doctrine.orm.entity_manager')
             ->getRepository(User::class)
             ->findOneBy(['email' => $email])
         ;

@@ -3,7 +3,7 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     tmpDir: var/cache/phpstan
     symfony:
-        container_xml_path: var/cache/dev/srcGbere_SimpleAuth_KernelDevDebugContainer.xml
+        container_xml_path: var/cache/dev/Gbere_SimpleAuth_KernelDevDebugContainer.xml
     excludes_analyse:
         - src/Migrations
         - src/Kernel.php

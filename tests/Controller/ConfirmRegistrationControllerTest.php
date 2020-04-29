@@ -9,6 +9,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Gbere\SimpleAuth\Entity\User;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Mime\Address;
 
@@ -17,12 +18,14 @@ class ConfirmRegistrationControllerTest extends WebTestCase
     private const EMAIL = 'confirm-my-registration@test.com';
     private const NAME = 'Test';
 
+    /** @var KernelBrowser */
+    private $client = null;
     /** @var User|null */
     private $user;
 
     public function setUp(): void
     {
-        self::bootKernel();
+        $this->client = static::createClient();
     }
 
     /**
@@ -32,8 +35,7 @@ class ConfirmRegistrationControllerTest extends WebTestCase
     {
         $this->removeTestUserIfExist();
         $this->createUserToConfirmRegistration();
-        $client = static::createClient();
-        $client->request('GET', $this->generateConfirmRegistrationRoute());
+        $this->client->request('GET', $this->generateConfirmRegistrationRoute());
         $this->assertEmailCount(1);
         $email = $this->getMailerMessage();
         $this->assertEmailHeaderSame($email, 'To', (new Address(self::EMAIL, self::NAME))->toString());
@@ -48,7 +50,7 @@ class ConfirmRegistrationControllerTest extends WebTestCase
     private function removeTestUserIfExist(): void
     {
         /** @var EntityManager $manager */
-        $manager = self::$container->get('doctrine.orm.entity_manager');
+        $manager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
         /** @var User|null $user */
         $user = $manager->getRepository(User::class)->findOneBy(['email' => self::EMAIL]);
         if (null !== $user) {
@@ -70,14 +72,14 @@ class ConfirmRegistrationControllerTest extends WebTestCase
             ->hasEnabled(false)
         ;
         /** @var EntityManager $manager */
-        $manager = self::$container->get('doctrine.orm.entity_manager');
+        $manager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
         $manager->persist($this->user);
         $manager->flush();
     }
 
     private function generateConfirmRegistrationRoute(): string
     {
-        return self::$container->get('router')->generate(
+        return $this->client->getContainer()->get('router')->generate(
             'gbere_auth_confirm_registration',
             ['token' => $this->user->getConfirmationToken()]
         );
