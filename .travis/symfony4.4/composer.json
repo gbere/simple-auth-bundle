@@ -1,0 +1,107 @@
+{
+    "name": "gbere/simple-auth-bundle",
+    "description": "gBere simple auth bundle",
+    "type": "symfony-bundle",
+    "keywords": ["simple auth", "auth bundle", "simple auth bundle", "gbere"],
+    "homepage": "https://github.com/gbere/simple-auth-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gerard Berengué",
+            "email": "gerard@bere.cat"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "sensio/framework-extra-bundle": "^5.1",
+        "symfony/asset": "4.4.*",
+        "symfony/console": "4.4.*",
+        "symfony/dotenv": "4.4.*",
+        "symfony/expression-language": "4.4.*",
+        "symfony/flex": "^1.3.1",
+        "symfony/form": "4.4.*",
+        "symfony/framework-bundle": "4.4.*",
+        "symfony/http-client": "4.4.*",
+        "symfony/intl": "4.4.*",
+        "symfony/mailer": "4.4.*",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/orm-pack": "^1.0",
+        "symfony/process": "4.4.*",
+        "symfony/security-bundle": "4.4.*",
+        "symfony/serializer-pack": "^1.0",
+        "symfony/translation": "4.4.*",
+        "symfony/twig-pack": "^1.0",
+        "symfony/validator": "4.4.*",
+        "symfony/web-link": "4.4.*",
+        "symfony/yaml": "4.4.*",
+        "twig/cssinliner-extra": "^3.0",
+        "twig/inky-extra": "^3.0"
+    },
+    "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "phpstan/phpstan": "^0.12.0",
+        "phpstan/phpstan-deprecation-rules": "^0.12.0",
+        "phpstan/phpstan-doctrine": "^0.12.0",
+        "phpstan/phpstan-phpunit": "^0.12.0",
+        "phpstan/phpstan-strict-rules": "^0.12.0",
+        "phpstan/phpstan-symfony": "^0.12.0",
+        "symfony/debug-pack": "^1.0",
+        "symfony/maker-bundle": "^1.11",
+        "symfony/profiler-pack": "^1.0",
+        "symfony/test-pack": "^1.0"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Gbere\\SimpleAuth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gbere\\SimpleAuth\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse src/ -c phpstan.neon --no-progress -vvv --memory-limit=1024M",
+        "phpstan-tests": "phpstan analyse tests/ -c phpstan-tests.neon --no-progress -vvv --memory-limit=1024M",
+        "phpunit": "simple-phpunit",
+        "cscheck": "php-cs-fixer fix --diff --dry-run -v",
+        "csfix": "php-cs-fixer fix",
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "check": [
+            "@phpstan",
+            "@phpstan-tests",
+            "@cscheck",
+            "@phpunit"
+        ],
+        "fix": [
+            "@csfix"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "4.4.*"
+        }
+    }
+}

@@ -13,6 +13,7 @@ env:
   global:
     - ACTION="update"
     - DATABASE_URL=mysql://travis:@127.0.0.1:3306/test?serverVersion=5.7
+    - SYMFONY_VERSION="last"
 
 matrix:
   fast_finish: true
@@ -26,12 +27,26 @@ matrix:
       php: 7.4
     - os: linux
       php: nightly
+    - os: linux
+      php: 7.2
+      env: SYMFONY_VERSION="4.4"
+    - os: linux
+      php: 7.3
+      env: SYMFONY_VERSION="4.4"
+    - os: linux
+      php: 7.4
+      env: SYMFONY_VERSION="4.4"
+    - os: linux
+      php: nightly
+      env: SYMFONY_VERSION="4.4"
   allow_failures:
     - php: nightly
 
 before_install:
   - composer self-update
   - '[[ "$ACTION" == "install" ]] || echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini'
+  - '[[ "$SYMFONY_VERSION" == "last" ]] || cp "./.travis/symfony${SYMFONY_VERSION}/composer.json" ./composer.json'
+  - '[[ "$SYMFONY_VERSION" == "last" ]] || cp "./.travis/symfony${SYMFONY_VERSION}/phpstan.neon" ./phpstan.neon'
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
 
 install:
