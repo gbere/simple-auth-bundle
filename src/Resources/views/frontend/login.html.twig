@@ -1,25 +1,37 @@
-{% extends 'base.html.twig' %}
+{% extends '@GbereSimpleAuth/frontend/layout.html.twig' %}
 
-{% block title %}Login!{% endblock %}
+{% block title %}Login{% endblock %}
 
-{% block body %}
-    <h1>Login</h1>
-
+{% block form_body %}
     {% if last_auth_error %}
-        <div>{{ last_auth_error.messageKey|trans(last_auth_error.messageData, 'security') }}</div>
+        <div class="auth-modal-error"><span>{{ last_auth_error.messageKey|trans(last_auth_error.messageData, 'security') }}</span></div>
     {% endif %}
-
-    <form action="{{ path('gbere_auth_login') }}" method="post">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" value="{{ last_username }}">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
+    <form class="auth-form" action="{{ path('gbere_auth_login') }}" method="post">
+        <div class="input-text-wrap">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" value="{{ last_username }}">
+        </div>
+        <div class="input-text-wrap">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password">
+        </div>
+        <div class="forgot-password-wrap">
+            <a href="{{ path('gbere_auth_password_request') }}">Forgot your password?</a>
+        </div>
+        <div class="checkbox-wrap">
+            <label>
+                <input type="checkbox" id="remember_me" name="_remember_me"> Remember session
+            </label>
+        </div>
+        <div class="auth-btn">
+            <button class="btn btn-primary" type="submit">Log In</button>
+        </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        <label for="remember_me">Remember-me</label>
-        <input type="checkbox" id="remember_me" name="_remember_me">
-        <button type="submit">login</button>
     </form>
-
-    <p><a href="{{ path('gbere_auth_register') }}">Register</a></p>
-    <p><a href="{{ path('gbere_auth_password_request') }}">Password request</a></p>
 {% endblock %}
+
+{% block form_footer %}
+    Don't have an account?
+    <a href="{{ path('gbere_auth_register') }}">Sign up!</a>
+{% endblock %}
+
