@@ -1,18 +1,23 @@
-{% extends 'base.html.twig' %}
+{% extends '@GbereSimpleAuth/frontend/layout.html.twig' %}
 
-{% block title %}Register!{% endblock %}
+{% form_theme form '@GbereSimpleAuth/frontend/form_theme.html.twig' %}
 
-{% block body %}
-    <h1>Register</h1>
+{% block title %}Register{% endblock %}
+
+{% block form_body %}
     {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.email) }}
         {{ form_row(form.name) }}
         {{ form_row(form.password) }}
-        <div>
-            <button type="submit">Submit</button>
+
+        <div class="auth-btn">
+            <button class="btn btn-primary" type="submit">Register</button>
         </div>
     {{ form_end(form) }}
+{% endblock %}
 
-    <p><a href="{{ path('gbere_auth_login') }}">Login</a></p>
+{% block form_footer %}
+    Are you already registered?
+    <a href="{{ path('gbere_auth_login') }}">Login!</a>
 {% endblock %}
