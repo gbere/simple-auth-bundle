@@ -35,7 +35,9 @@ final class PasswordResetController extends AbstractController
             return $this->redirectToRoute('gbere_auth_login');
         }
 
-        $form = $this->createFormBuilder()->add('plainPassword', PasswordType::class)->getForm();
+        $form = $this->createFormBuilder()->add('plainPassword', PasswordType::class, [
+            'label' => 'New password',
+        ])->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($userRepository->encodePassword($form->get('plainPassword')->getData()));
