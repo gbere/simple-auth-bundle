@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class PasswordResetController extends AbstractController
+final class ResetPasswordController extends AbstractController
 {
     /**
      * @Route("/password/reset/{token}", name="gbere_auth_password_reset")
@@ -50,6 +50,6 @@ final class PasswordResetController extends AbstractController
             return $this->redirectToRoute('gbere_auth_login');
         }
 
-        return $this->render('@GbereSimpleAuth/frontend/password-reset.html.twig', ['form' => $form->createView()]);
+        return $this->render('@GbereSimpleAuth/frontend/reset-password.html.twig', ['form' => $form->createView()]);
     }
 }

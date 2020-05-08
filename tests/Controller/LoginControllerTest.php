@@ -12,7 +12,7 @@ class LoginControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request('GET', '/login');
-        $client->submitForm('login', [
+        $client->submitForm('Log In', [
             'email' => 'role-user@fixture.com',
             'password' => 'role-user',
         ]);

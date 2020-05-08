@@ -34,7 +34,7 @@ class RegisterControllerTest extends WebTestCase
     {
         $this->removeTestUserIfExist();
         $this->client->request('GET', '/register');
-        $this->client->submitForm('Submit', [
+        $this->client->submitForm('Register', [
             'register[email]' => self::EMAIL,
             'register[name]' => self::NAME,
             'register[password][first]' => self::PASSWORD,

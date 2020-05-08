@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Mime\Address;
 
-class PasswordResetControllerTest extends WebTestCase
+class ResetPasswordControllerTest extends WebTestCase
 {
     private const EMAIL = 'role-user@fixture.com';
     private const PASSWORD = 'role-user';
@@ -39,7 +39,7 @@ class PasswordResetControllerTest extends WebTestCase
         $this->loadUser();
         $this->disableUser();
         $this->client->request('GET', $this->generatePasswordResetRoute());
-        $this->client->submitForm('Password reset', [
+        $this->client->submitForm('Reset password', [
             'form[plainPassword]' => self::PASSWORD,
         ]);
         $this->assertEmailCount(1);

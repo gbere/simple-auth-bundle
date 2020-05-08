@@ -29,7 +29,7 @@ class PasswordRequestControllerTest extends WebTestCase
     {
         $user = $this->findUserByEmail(self::EMAIL);
         $this->client->request('GET', 'password/request');
-        $this->client->submitForm('Submit', [
+        $this->client->submitForm('Password request', [
             'form[email]' => $user->getEmail(),
         ]);
         $this->assertEmailCount(1);
