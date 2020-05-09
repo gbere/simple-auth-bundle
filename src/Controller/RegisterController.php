@@ -35,7 +35,7 @@ final class RegisterController extends AbstractController
             if ((bool) $this->getParameter('simple_auth_confirm_registration')) {
                 $user->generateToken();
                 $mailer->sendConfirmRegistrationMessage($user);
-                $this->addFlash('success', sprintf('An email was sent to %s', $user->getEmail()));
+                $this->addFlash('info', sprintf('An email was sent to %s', $user->getEmail()));
             } else {
                 $user->hasEnabled(true);
             }

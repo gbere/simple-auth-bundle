@@ -44,7 +44,7 @@ final class ResetPasswordController extends AbstractController
             $user->hasEnabled(true);
             $user->setConfirmationToken(null);
             $userRepository->persistAndFlush($user);
-            $this->addFlash('success', 'The password was updated');
+            $this->addFlash('info', 'The password was updated');
             $mailer->sendPasswordResetNotificationMessage($user);
 
             return $this->redirectToRoute('gbere_auth_login');
