@@ -22,6 +22,7 @@ final class LoginController extends AbstractController
         return $this->render('@GbereSimpleAuth/frontend/login.html.twig', [
             'last_username' => $lastUsername,
             'last_auth_error' => $lastAuthError,
+            'remember_me' => $this->getParameter('simple_auth_remember_me'),
         ]);
     }
 }

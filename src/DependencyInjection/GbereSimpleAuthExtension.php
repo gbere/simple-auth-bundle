@@ -40,6 +40,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         $container->setParameter('simple_auth_sender_email', $this->config['sender']['email']);
         $container->setParameter('simple_auth_sender_name', $this->config['sender']['name']);
         $container->setParameter('simple_auth_confirm_registration', $this->config['confirm_registration']);
+        $container->setParameter('simple_auth_remember_me', $this->config['remember_me_lifetime'] ? true : false);
     }
 
     public function prepend(ContainerBuilder $container): void

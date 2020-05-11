@@ -18,11 +18,13 @@
         <div class="forgot-password-wrap">
             <a href="{{ path('gbere_auth_password_request') }}">Forgot your password?</a>
         </div>
-        <div class="checkbox-wrap">
-            <label>
-                <input type="checkbox" id="remember_me" name="_remember_me"> Remember session
-            </label>
-        </div>
+        {% if remember_me %}
+            <div class="checkbox-wrap">
+                <label>
+                    <input type="checkbox" id="remember_me" name="_remember_me"> Remember session
+                </label>
+            </div>
+        {%  endif %}
         <div class="auth-btn">
             <button class="btn btn-primary" type="submit">Log In</button>
         </div>
