@@ -6,7 +6,7 @@
     {% if last_auth_error %}
         <div class="auth-modal-error"><span>{{ last_auth_error.messageKey|trans(last_auth_error.messageData, 'security') }}</span></div>
     {% endif %}
-    <form class="auth-form" action="{{ path('gbere_auth_login') }}" method="post">
+    <form class="auth-form" action="{{ path('simple_auth_login') }}" method="post">
         <div class="input-text-wrap">
             <label for="email">Email</label>
             <input id="email" name="email" type="email" value="{{ last_username }}">
@@ -16,7 +16,7 @@
             <input id="password" name="password" type="password">
         </div>
         <div class="forgot-password-wrap">
-            <a href="{{ path('gbere_auth_password_request') }}">Forgot your password?</a>
+            <a href="{{ path('simple_auth_password_request') }}">Forgot your password?</a>
         </div>
         {% if remember_me %}
             <div class="checkbox-wrap">
@@ -34,6 +34,6 @@
 
 {% block form_footer %}
     Don't have an account?
-    <a href="{{ path('gbere_auth_register') }}">Sign up!</a>
+    <a href="{{ path('simple_auth_register') }}">Sign up!</a>
 {% endblock %}
 

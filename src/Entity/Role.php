@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Table(name="gbere_auth_role")
+ * @ORM\Table()
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Gbere\SimpleAuth\Repository\RoleRepository")
  * @UniqueEntity("name" )

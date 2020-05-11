@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class RegisterController extends AbstractController
 {
     /**
-     * @Route("/register", name="gbere_auth_register")
+     * @Route("/register", name="simple_auth_register")
      *
      * @throws TransportExceptionInterface
      * @throws Exception
@@ -41,7 +41,7 @@ final class RegisterController extends AbstractController
             }
             $userRepository->persistAndFlush($user);
 
-            return $this->redirectToRoute('gbere_auth_login');
+            return $this->redirectToRoute('simple_auth_login');
         }
 
         return $this->render('@GbereSimpleAuth/frontend/register.html.twig', [

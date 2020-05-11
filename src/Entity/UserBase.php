@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="gbere_auth_user")
+ * @ORM\Table(name="user")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string", length=4)
  * @ORM\DiscriminatorMap({
@@ -51,7 +51,7 @@ abstract class UserBase implements UserInterface
     /**
      * @var Collection
      * @ORM\ManyToMany(targetEntity="Gbere\SimpleAuth\Entity\Role", inversedBy="users")
-     * @ORM\JoinTable(name="gbere_auth_user_role")
+     * @ORM\JoinTable(name="user_role")
      */
     private $roles;
 

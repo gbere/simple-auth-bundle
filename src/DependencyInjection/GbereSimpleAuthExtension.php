@@ -102,7 +102,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
                     'authenticators' => [LoginFormAuthenticator::class],
                 ],
                 'logout' => [
-                    'path' => 'gbere_auth_logout',
+                    'path' => 'simple_auth_logout',
                 ],
             ],
         ];

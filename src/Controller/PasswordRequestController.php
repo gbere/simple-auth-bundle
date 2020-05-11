@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class PasswordRequestController extends AbstractController
 {
     /**
-     * @Route("/password/request", name="gbere_auth_password_request")
+     * @Route("/password/request", name="simple_auth_password_request")
      *
      * @throws Exception
      * @throws ORMException
@@ -42,7 +42,7 @@ final class PasswordRequestController extends AbstractController
                 $mailer->sendPasswordResetMessage($user);
                 $this->addFlash('info', sprintf('An email was sent to %s to restore the password', $email));
 
-                return $this->redirectToRoute('gbere_auth_login');
+                return $this->redirectToRoute('simple_auth_login');
             }
             $this->addFlash('warning', sprintf('The email %s isn\'t registered', $email));
         }

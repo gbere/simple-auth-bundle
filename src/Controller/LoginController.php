@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 final class LoginController extends AbstractController
 {
     /**
-     * @Route("/login", name="gbere_auth_login")
+     * @Route("/login", name="simple_auth_login")
      */
     public function __invoke(AuthenticationUtils $authenticationUtils): Response
     {

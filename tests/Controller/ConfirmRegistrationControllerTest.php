@@ -80,7 +80,7 @@ class ConfirmRegistrationControllerTest extends WebTestCase
     private function generateConfirmRegistrationRoute(): string
     {
         return $this->client->getContainer()->get('router')->generate(
-            'gbere_auth_confirm_registration',
+            'simple_auth_confirm_registration',
             ['token' => $this->user->getConfirmationToken()]
         );
     }

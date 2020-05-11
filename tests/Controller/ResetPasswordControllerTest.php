@@ -70,7 +70,7 @@ class ResetPasswordControllerTest extends WebTestCase
     private function generatePasswordResetRoute(): string
     {
         return $this->client->getContainer()->get('router')->generate(
-            'gbere_auth_password_reset',
+            'simple_auth_password_reset',
             ['token' => $this->user->getConfirmationToken()]
         );
     }

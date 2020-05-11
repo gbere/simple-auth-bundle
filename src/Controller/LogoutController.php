@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class LogoutController
 {
     /**
-     * @Route("/logout", name="gbere_auth_logout")
+     * @Route("/logout", name="simple_auth_logout")
      */
     public function __invoke(): void
     {

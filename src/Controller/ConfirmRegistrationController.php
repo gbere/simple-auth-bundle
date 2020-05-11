@@ -19,7 +19,7 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 final class ConfirmRegistrationController extends AbstractController
 {
     /**
-     * @Route("/register/confirmation/{token}", name="gbere_auth_confirm_registration")
+     * @Route("/register/confirmation/{token}", name="simple_auth_confirm_registration")
      *
      * @throws ORMException
      * @throws OptimisticLockException
@@ -37,7 +37,7 @@ final class ConfirmRegistrationController extends AbstractController
         if (null === $user) {
             $this->addFlash('danger', 'The token is invalid');
 
-            return $this->redirectToRoute('gbere_auth_login');
+            return $this->redirectToRoute('simple_auth_login');
         }
         $user->hasEnabled(true);
         $user->setConfirmationToken(null);
@@ -48,6 +48,6 @@ final class ConfirmRegistrationController extends AbstractController
         // TODO: Auto login after validate?
         // return $guardHandler->authenticateUserAndHandleSuccess($user, $request, $authenticator, 'gbere_main_firewall');
 
-        return $this->redirectToRoute('gbere_auth_login');
+        return $this->redirectToRoute('simple_auth_login');
     }
 }

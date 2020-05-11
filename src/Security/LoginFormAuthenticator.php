@@ -50,7 +50,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
 
     public function supports(Request $request): bool
     {
-        return 'gbere_auth_login' === $request->attributes->get('_route')
+        return 'simple_auth_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
@@ -122,6 +122,6 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
 
     protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate('gbere_auth_login');
+        return $this->urlGenerator->generate('simple_auth_login');
     }
 }

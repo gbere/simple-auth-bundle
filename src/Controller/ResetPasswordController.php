@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ResetPasswordController extends AbstractController
 {
     /**
-     * @Route("/password/reset/{token}", name="gbere_auth_password_reset")
+     * @Route("/password/reset/{token}", name="simple_auth_password_reset")
      *
      * @throws Exception
      * @throws ORMException
@@ -32,7 +32,7 @@ final class ResetPasswordController extends AbstractController
         if (null === $user) {
             $this->addFlash('warning', 'The token is invalid');
 
-            return $this->redirectToRoute('gbere_auth_login');
+            return $this->redirectToRoute('simple_auth_login');
         }
 
         $form = $this->createFormBuilder()->add('plainPassword', PasswordType::class, [
@@ -47,7 +47,7 @@ final class ResetPasswordController extends AbstractController
             $this->addFlash('info', 'The password was updated');
             $mailer->sendPasswordResetNotificationMessage($user);
 
-            return $this->redirectToRoute('gbere_auth_login');
+            return $this->redirectToRoute('simple_auth_login');
         }
 
         return $this->render('@GbereSimpleAuth/frontend/reset-password.html.twig', ['form' => $form->createView()]);
