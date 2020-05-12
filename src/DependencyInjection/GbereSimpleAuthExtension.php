@@ -21,6 +21,8 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
     /** @var array|null */
     private $securityConfig;
     /** @var array|null */
+    private $twigConfig;
+    /** @var array|null */
     private $config;
 
     /**
@@ -55,8 +57,10 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         $this->addSecurityEncodersConfig();
         $this->addSecurityProvidersConfig();
         $this->addSecurityFirewallConfig();
-
         $this->updateSecurityExtensionConfig($container);
+
+        $this->addTwigGlobalsConfig();
+        $this->updateTwigExtensionConfig($container);
     }
 
     private function addSecurityTestingRoutesConfig(): void
@@ -143,5 +147,16 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
         }
 
         $extensionConfigsRefl->setValue($container, $extensionConfigs);
+    }
+
+    private function addTwigGlobalsConfig(): void
+    {
+        $this->twigConfig['globals']['simple_auth_form_logo'] = $this->config['style']['form_logo'];
+        $this->twigConfig['globals']['simple_auth_accent_color'] = '#'.$this->config['style']['accent_color'];
+    }
+
+    private function updateTwigExtensionConfig(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('twig', $this->twigConfig);
     }
 }
