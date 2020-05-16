@@ -14,7 +14,7 @@ services:
 
     Gbere\SimpleAuth\Service\Mailer:
         arguments:
-                ['@mailer.mailer', '@parameter_bag']
+                ['@parameter_bag', '@mailer.mailer', '@router']
     gbere_simple_auth.mailer:
         alias: Gbere\SimpleAuth\Service\Mailer
 

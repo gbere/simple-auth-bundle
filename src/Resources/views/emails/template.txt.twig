@@ -1,0 +1,11 @@
+{{ email.subject }}
+
+{% block content %}
+    {{ content }}
+{% endblock %}
+
+{% block action %}
+    {% if action_url is defined %}
+        {{ action_url }}: {{ action_text }}
+    {% endif %}
+{% endblock %}

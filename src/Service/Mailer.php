@@ -4,24 +4,29 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Service;
 
+use Gbere\SimpleAuth\Bridge\Mime\TemplatedEmail;
 use Gbere\SimpleAuth\Entity\UserInterface;
-use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class Mailer
 {
-    /** @var MailerInterface */
-    private $mailer;
     /** @var ParameterBagInterface */
     private $parameterBag;
+    /** @var MailerInterface */
+    private $mailer;
+    /** @var RouterInterface */
+    private $router;
 
-    public function __construct(MailerInterface $mailer, ParameterBagInterface $parameterBag)
+    public function __construct(ParameterBagInterface $parameterBag, MailerInterface $mailer, RouterInterface $router)
     {
-        $this->mailer = $mailer;
         $this->parameterBag = $parameterBag;
+        $this->mailer = $mailer;
+        $this->router = $router;
     }
 
     /**
@@ -29,12 +34,15 @@ class Mailer
      */
     public function sendConfirmRegistrationMessage(UserInterface $user): void
     {
-        $this->mailer->send((new NotificationEmail())
+        $this->mailer->send((new TemplatedEmail())
             ->from($this->getSenderEmail())
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Confirm registration')
-            ->htmlTemplate('@GbereSimpleAuth/emails/confirm-registration.html.twig')
-            ->context(['token' => $user->getConfirmationToken()])
+            ->context([
+                'content' => 'Please click the next link to confirm registration',
+                'action_url' => $this->generateUrl('simple_auth_confirm_registration', ['token' => $user->getConfirmationToken()]),
+                'action_text' => 'Confirm registration',
+            ])
         );
     }
 
@@ -43,12 +51,11 @@ class Mailer
      */
     public function sendWelcomeMessage(UserInterface $user): void
     {
-        $this->mailer->send((new NotificationEmail())
+        $this->mailer->send((new TemplatedEmail())
             ->from($this->getSenderEmail())
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Welcome')
-            ->htmlTemplate('@GbereSimpleAuth/emails/welcome.html.twig')
-            ->context(['token' => $user->getConfirmationToken()])
+            ->context(['content' => 'Your registration was successfully completed'])
         );
     }
 
@@ -57,12 +64,15 @@ class Mailer
      */
     public function sendPasswordResetMessage(UserInterface $user): void
     {
-        $this->mailer->send((new NotificationEmail())
+        $this->mailer->send((new TemplatedEmail())
             ->from($this->getSenderEmail())
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Password request')
-            ->htmlTemplate('@GbereSimpleAuth/emails/password-reset.html.twig')
-            ->context(['token' => $user->getConfirmationToken()])
+            ->context([
+                'content' => 'Please, click the next link to reset your password',
+                'action_url' => $this->generateUrl('simple_auth_password_reset', ['token' => $user->getConfirmationToken()]),
+                'action_text' => 'Reset password',
+            ])
         );
     }
 
@@ -71,11 +81,13 @@ class Mailer
      */
     public function sendPasswordResetNotificationMessage(UserInterface $user): void
     {
-        $this->mailer->send((new NotificationEmail())
+        $this->mailer->send((new TemplatedEmail())
             ->from($this->getSenderEmail())
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject('Password reset notification')
-            ->htmlTemplate('@GbereSimpleAuth/emails/password-reset-notification.html.twig')
+            ->context([
+                'content' => 'Your password was successfully updated',
+            ])
         );
     }
 
@@ -85,5 +97,10 @@ class Mailer
             $this->parameterBag->get('simple_auth_sender_email'),
             $this->parameterBag->get('simple_auth_sender_name') ?? ''
         );
+    }
+
+    private function generateUrl(string $name, array $parameters = null): string
+    {
+        return $this->router->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }
