@@ -42,7 +42,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('style')
                 ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarnode('form_logo')->defaultValue('default')->info('Set custom path image, disable with ~ char or default demo image')->end()
+                        ->scalarnode('logo')->defaultValue('demo')->info('Define a custom path, disable it with ~ char or set demo image')->end()
                         ->scalarnode('accent_color')->defaultValue('0088aa')->info('Set color in RGB hexadecimal without the #')->end()
                     ->end()
                 ->end()

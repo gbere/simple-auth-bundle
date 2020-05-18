@@ -151,7 +151,7 @@ class GbereSimpleAuthExtension extends Extension implements PrependExtensionInte
 
     private function addTwigGlobalsConfig(): void
     {
-        $this->twigConfig['globals']['simple_auth_form_logo'] = $this->config['style']['form_logo'];
+        $this->twigConfig['globals']['simple_auth_logo'] = $this->config['style']['logo'];
         $this->twigConfig['globals']['simple_auth_accent_color'] = '#'.$this->config['style']['accent_color'];
     }
 

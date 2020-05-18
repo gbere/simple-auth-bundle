@@ -20,12 +20,12 @@
                     <div class="auth-modal-table">
                         <div class="auth-modal-table-row">
                             <div class="auth-modal-body">
-                                {% if not simple_auth_form_logo is null %}
+                                {% if not simple_auth_logo is null %}
                                     <div class="auth-logo">
-                                        {% if simple_auth_form_logo == 'default' %}
+                                        {% if simple_auth_logo == 'demo' %}
                                             {{ include('@GbereSimpleAuth/frontend/_logo.html.twig') }}
                                         {% else %}
-                                            <img src="{{ asset(simple_auth_form_logo) }}" alt="logo">
+                                            <img src="{{ asset(simple_auth_logo) }}" alt="logo">
                                         {% endif %}
                                     </div>
                                 {% endif %}
