@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RegisterController extends AbstractController
 {
@@ -23,7 +24,7 @@ final class RegisterController extends AbstractController
      * @throws TransportExceptionInterface
      * @throws Exception
      */
-    public function __invoke(Request $request, UserRepository $userRepository, Mailer $mailer): Response
+    public function __invoke(Request $request, UserRepository $userRepository, Mailer $mailer, TranslatorInterface $translator): Response
     {
         $user = $userRepository->createUser();
         $form = $this->createForm(RegisterType::class, $user);
@@ -35,7 +36,7 @@ final class RegisterController extends AbstractController
             if ((bool) $this->getParameter('simple_auth_confirm_registration')) {
                 $user->generateToken();
                 $mailer->sendConfirmRegistrationMessage($user);
-                $this->addFlash('info', sprintf('An email was sent to %s', $user->getEmail()));
+                $this->addFlash('info', $translator->trans('fash.confirm_registration', ['%email%' => $user->getEmail()], 'SimpleAuthBundle'));
             } else {
                 $user->hasEnabled(true);
             }

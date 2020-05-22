@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ResetPasswordController extends AbstractController
 {
@@ -26,11 +27,11 @@ final class ResetPasswordController extends AbstractController
      * @throws OptimisticLockException
      * @throws TransportExceptionInterface
      */
-    public function __invoke(string $token, Request $request, UserRepository $userRepository, Mailer $mailer): Response
+    public function __invoke(string $token, Request $request, UserRepository $userRepository, Mailer $mailer, TranslatorInterface $translator): Response
     {
         $user = $userRepository->findOneBy(['confirmationToken' => $token]);
         if (null === $user) {
-            $this->addFlash('warning', 'The token is invalid');
+            $this->addFlash('warning', $translator->trans('flash.invalid_token', [], 'SimpleAuthBundle'));
 
             return $this->redirectToRoute('simple_auth_login');
         }
@@ -44,7 +45,7 @@ final class ResetPasswordController extends AbstractController
             $user->hasEnabled(true);
             $user->setConfirmationToken(null);
             $userRepository->persistAndFlush($user);
-            $this->addFlash('info', 'The password was updated');
+            $this->addFlash('info', $translator->trans('flash.updated_password', [], 'SimpleAuthBundle'));
             $mailer->sendPasswordResetNotificationMessage($user);
 
             return $this->redirectToRoute('simple_auth_login');

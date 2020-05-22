@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ConfirmRegistrationController extends AbstractController
 {
@@ -31,18 +32,19 @@ final class ConfirmRegistrationController extends AbstractController
         GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $authenticator,
         Mailer $mailer,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        TranslatorInterface $translator
     ): Response {
         $user = $userRepository->findOneBy(['confirmationToken' => $token]);
         if (null === $user) {
-            $this->addFlash('danger', 'The token is invalid');
+            $this->addFlash('danger', $translator->trans('flash.invalid_token', [], 'SimpleAuthBundle'));
 
             return $this->redirectToRoute('simple_auth_login');
         }
         $user->hasEnabled(true);
         $user->setConfirmationToken(null);
         $userRepository->persistAndFlush($user);
-        $this->addFlash('info', 'The user has been successfully enabled');
+        $this->addFlash('info', $translator->trans('flash.user_enabled', [], 'SimpleAuthBundle'));
         $mailer->sendWelcomeMessage($user);
 
         // TODO: Auto login after validate?

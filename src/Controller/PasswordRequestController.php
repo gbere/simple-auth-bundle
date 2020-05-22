@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class PasswordRequestController extends AbstractController
 {
@@ -27,7 +28,7 @@ final class PasswordRequestController extends AbstractController
      * @throws OptimisticLockException
      * @throws TransportExceptionInterface
      */
-    public function __invoke(Request $request, Mailer $mailer, UserRepository $userRepository): Response
+    public function __invoke(Request $request, Mailer $mailer, UserRepository $userRepository, TranslatorInterface $translator): Response
     {
         $builder = $this->createFormBuilder()->add('email', EmailType::class);
         $form = $builder->getForm();
@@ -40,11 +41,11 @@ final class PasswordRequestController extends AbstractController
                 $user->setPasswordRequestAt(new DateTime());
                 $userRepository->persistAndFlush($user);
                 $mailer->sendPasswordResetMessage($user);
-                $this->addFlash('info', sprintf('An email was sent to %s to restore the password', $email));
+                $this->addFlash('info', $translator->trans('flash.restore_password', ['email' => $email], 'SimpleAuthBundle'));
 
                 return $this->redirectToRoute('simple_auth_login');
             }
-            $this->addFlash('warning', sprintf('The email %s isn\'t registered', $email));
+            $this->addFlash('warning', $translator->trans('flash.email_not_registered', ['email' => $email], 'SimpleAuthBundle'));
         }
 
         return $this->render('@GbereSimpleAuth/frontend/password-request.html.twig', [
