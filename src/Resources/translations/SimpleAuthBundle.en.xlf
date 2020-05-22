@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="en">
+  <file id="SimpleAuthBundle.en">
+    <unit id="SizcjYz" name="flash.invalid_token">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Controller/ResetPasswordController.php:34</note>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Controller/ConfirmRegistrationController.php:40</note>
+      </notes>
+      <segment>
+        <source>flash.invalid_token</source>
+        <target>The token is invalid</target>
+      </segment>
+    </unit>
+    <unit id="QoVekMZ" name="flash.updated_password">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Controller/ResetPasswordController.php:48</note>
+      </notes>
+      <segment>
+        <source>flash.updated_password</source>
+        <target>The password was updated</target>
+      </segment>
+    </unit>
+    <unit id="tb8.IFp" name="flash.restore_password">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Controller/PasswordRequestController.php:44</note>
+      </notes>
+      <segment>
+        <source>flash.restore_password</source>
+        <target>An email was sent to %email% to restore the password</target>
+      </segment>
+    </unit>
+    <unit id="g9bNXJC" name="flash.email_not_registered">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Controller/PasswordRequestController.php:48</note>
+      </notes>
+      <segment>
+        <source>flash.email_not_registered</source>
+        <target>The email %email% isn\'t registered</target>
+      </segment>
+    </unit>
+    <unit id="SyZjl63" name="fash.confirm_registration">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Controller/RegisterController.php:39</note>
+      </notes>
+      <segment>
+        <source>fash.confirm_registration</source>
+        <target>An email was sent to %email% that contains a link to activate your account.</target>
+      </segment>
+    </unit>
+    <unit id="AM93YYR" name="flash.user_enabled">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Controller/ConfirmRegistrationController.php:47</note>
+      </notes>
+      <segment>
+        <source>flash.user_enabled</source>
+        <target>The user has been successfully enabled</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
