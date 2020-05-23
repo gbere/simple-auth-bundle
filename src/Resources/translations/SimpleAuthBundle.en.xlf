@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="en">
   <file id="SimpleAuthBundle.en">
+    <unit id="D2N6_cP" name="label.email">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Form/RegisterType.php:21</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>label.email</source>
+        <target>Email</target>
+      </segment>
+    </unit>
+    <unit id="ysOvPSq" name="label.name">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Form/RegisterType.php:24</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>label.name</source>
+        <target>Name</target>
+      </segment>
+    </unit>
+    <unit id="9pvowqn" name="label.password">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Form/RegisterType.php:30</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>label.password</source>
+        <target>Password</target>
+      </segment>
+    </unit>
+    <unit id="rU9cSfq" name="label.repeat_password">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Form/RegisterType.php:31</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>label.repeat_password</source>
+        <target>Repeat password</target>
+      </segment>
+    </unit>
+    <unit id="XohImNo" name="password">
+      <notes>
+        <note category="file-source" priority="1">simple-auth-bundle/src/Form/RegisterType.php:20</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>password</source>
+        <target>Password</target>
+      </segment>
+    </unit>
     <unit id="SizcjYz" name="flash.invalid_token">
       <notes>
         <note category="file-source" priority="1">simple-auth-bundle/src/Controller/ResetPasswordController.php:34</note>

@@ -18,13 +18,17 @@ class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('name', TextType::class)
+            ->add('email', EmailType::class, [
+                'label' => 'label.email',
+            ])
+            ->add('name', TextType::class, [
+                'label' => 'label.name',
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => true,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options' => ['label' => 'label.password'],
+                'second_options' => ['label' => 'label.repeat_password'],
             ])
         ;
     }
@@ -33,6 +37,7 @@ class RegisterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UserInterface::class,
+            'translation_domain' => 'SimpleAuthBundle',
         ]);
     }
 }
