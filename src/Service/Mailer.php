@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Gbere\SimpleAuth\Service;
 
 use Gbere\SimpleAuth\Bridge\Mime\TemplatedEmail;
-use Gbere\SimpleAuth\Entity\UserInterface;
+use Gbere\SimpleAuth\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;

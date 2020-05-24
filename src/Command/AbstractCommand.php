@@ -6,7 +6,7 @@ namespace Gbere\SimpleAuth\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Gbere\SimpleAuth\Entity\Role;
-use Gbere\SimpleAuth\Entity\UserInterface;
+use Gbere\SimpleAuth\Model\UserInterface;
 use Gbere\SimpleAuth\Repository\AdminUserRepository;
 use Gbere\SimpleAuth\Repository\UserRepository;
 use Symfony\Component\Console\Command\Command;

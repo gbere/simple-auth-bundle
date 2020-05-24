@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Gbere\SimpleAuth\Controller;
 
 use Exception;
-use Gbere\SimpleAuth\Entity\UserInterface;
 use Gbere\SimpleAuth\Form\RegisterType;
+use Gbere\SimpleAuth\Model\UserInterface;
 use Gbere\SimpleAuth\Repository\UserRepository;
 use Gbere\SimpleAuth\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

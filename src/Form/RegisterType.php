@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Form;
 
-use Gbere\SimpleAuth\Entity\UserInterface;
+use Gbere\SimpleAuth\Model\UserInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

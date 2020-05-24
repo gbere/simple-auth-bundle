@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Gbere\SimpleAuth\Entity;
+namespace Gbere\SimpleAuth\Model;
 
 use DateTime;
 use Doctrine\Common\Collections\Collection;
+use Gbere\SimpleAuth\Entity\Role;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 
 interface UserInterface extends SecurityUserInterface

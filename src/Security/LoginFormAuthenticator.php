@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Gbere\SimpleAuth\Security;
 
 use Exception;
-use Gbere\SimpleAuth\Entity\User;
 use Gbere\SimpleAuth\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,7 +90,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implem
             throw new CustomUserMessageAuthenticationException('Invalid credentials');
         }
 
-        /** @var User $user */
+        /** @var \Gbere\SimpleAuth\Model\UserInterface $user */
         if (false === $user->isEnabled()) {
             throw new CustomUserMessageAuthenticationException('The user isn\'t enabled');
         }

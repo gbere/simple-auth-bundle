@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gbere\SimpleAuth\Repository;
 
-use Gbere\SimpleAuth\Entity\UserInterface;
+use Gbere\SimpleAuth\Model\UserInterface;
 
 /**
  * @method UserInterface|null find($id, $lockMode = null, $lockVersion = null)
