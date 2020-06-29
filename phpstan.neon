@@ -2,6 +2,8 @@ parameters:
     level: 5
     checkGenericClassInNonGenericObjectType: false
     tmpDir: var/cache/phpstan
+    paths:
+        - src
     symfony:
         container_xml_path: var/cache/dev/Gbere_SimpleAuth_KernelDevDebugContainer.xml
     excludes_analyse:

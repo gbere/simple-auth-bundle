@@ -1,4 +1,7 @@
 {
+    "doctrine/sql-formatter": {
+        "version": "1.1.0"
+    },
     "nyholm/nsa": {
         "version": "1.1.0"
     },
@@ -41,10 +44,25 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
+    "symfony/deprecation-contracts": {
+        "version": "v2.1.2"
+    },
     "symfony/polyfill-ctype": {
         "version": "v1.15.0"
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.17.1"
+    },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.17.1"
+    },
     "symfony/polyfill-php70": {
         "version": "v1.15.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.1"
+    },
+    "symfony/string": {
+        "version": "v5.1.2"
     }
 }
